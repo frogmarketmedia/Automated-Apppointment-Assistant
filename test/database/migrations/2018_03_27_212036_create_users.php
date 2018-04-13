@@ -17,7 +17,7 @@ class CreateUsers extends Migration
             $table->increments('id');
             $table->String('name');
             $table->String('profession');
-            $table->Integer('phone');
+            $table->String('phone');
             $table->String('email');
             $table->String('password');
             $table->string('remember_token', 100)->nullable();
