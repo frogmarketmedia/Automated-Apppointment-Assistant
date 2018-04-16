@@ -9,7 +9,8 @@
   		 @if (Route::has('login'))
             <div class="top-right links">
                 @auth
-                    <button type="submit" class="btn btn-primary">Give Appointments</button>
+                	<input id="userID" name="userID" type="hidden" value="{{ $user->id }}">
+                    <button type="submit" class="btn btn-primary">Place Appointment</button>
                 @endauth
             </div>
         @endif
