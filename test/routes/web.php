@@ -15,7 +15,10 @@ Route::post('/login/enter', 'loginController@enter');
 Route::get('/signup', 'signupController@index');
 Route::post('/signup', 'signupController@register');
 
-Route::post('/placeappointments', 'AppointmentsController@makeAppointment');
+Route::get('/placeappointments/{user}', 'AppointmentsController@index');
+Route::post('/placeappointments/{user}', 'AppointmentsController@makeAppointment');
+
+Route::get('/appointments', 'AppointmentsController@show');
 
 
 Route::get('logout', 'Auth\LoginController@logout');

@@ -20,9 +20,8 @@ class CreateAppointment extends Migration
             $table->foreign('user_id')
                   ->references('id')->on('users')
                   ->onDelete('cascade');
-            $table->foreign('client_id')
-                  ->references('id')->on('clients')
-                  ->onDelete('cascade');
+            $table->timestamp('appointmentTime');
+            $table->boolean('client')->default(true);
             $table->timestamps();
         });
     }

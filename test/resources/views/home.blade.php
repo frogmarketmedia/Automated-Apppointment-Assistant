@@ -21,8 +21,8 @@
         </div>
     </div>
 </div>
-<form method="GET" action="/logout">
+<form method="GET" action="/appointments">
   {{ csrf_field() }}
-    <button type="Submit" class="btn btn-primary">Submit</button>
+    <button type="Submit" class="btn btn-primary">Show Appointments</button>
 </form>
 @endsection
