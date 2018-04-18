@@ -1,42 +1,33 @@
 @extends('layout')
 @section('content')
 <div>
-    <h2 align="left">User List</h2>
-    <div class="search" >
-      <form method="POST" action="/user">
-        {{ csrf_field() }}
-        <input type="text" placeholder="Search User's" name="searched">
-      </form>
-    </div>
-    <ul align="left">
-      <li>NameProfession</li>
-    </ul>
+  <div class="search" >
+    <form method="POST" action="/user">
+      {{ csrf_field() }}
+      <input type="text" placeholder="Search User's" name="searched">
+    </form>
+  </div>
+  <div class="content" style="width: 2000px;">
+    <h3 style="float: left;padding-left: 40px;"> Name</h3>
+    <h3 style="padding-left: 310px; "> Profession</h3>
+  </div>
   @if(isset($details))
     <ul align="left">
-    @foreach($details as $user)
-      <li><a href="/user/{{$user->id}}">{{ $user->name }}</a>{{ $user->profession }}</li>
-    @endforeach
+      @foreach($details as $user)
+        <li><a href="/user/{{$user->id}}">{{ $user->name }}</a>{{ $user->profession }}</li>
+      @endforeach
     </ul>
   @else
     <ul align="left">
-    @foreach($users as $user)
-      <li><a href="/user/{{$user->id}}">{{ $user->name }}</a>{{ $user->profession }}</li>
-    @endforeach
+      @foreach($users as $user)
+        <li><a href="/user/{{$user->id}}">{{ $user->name }}</a>{{ $user->profession }}</li>
+      @endforeach
     </ul>
   @endif
   
 </div>
 <style>
 
- 
-h2 {
-  
-  left: 100px;
-  font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
- 
-}
  
 ul {
   list-style-type: none;
@@ -79,11 +70,12 @@ li a:hover {
   color: #5D6D7E;
   text-decoration:none;
 }
-
+.content{
+  -webkit-column-count: 2; /* Chrome, Safari, Opera */
+  -moz-column-count: 2; /* Firefox */
+  column-count: 2;
+}
 .search input[type=text] {
-    position: absolute;
-    top: 120px;
-    right: 80px;
     float: right;
     padding: 6px;
     border: none;
@@ -91,16 +83,6 @@ li a:hover {
     margin-right: 16px;
     font-size: 17px;
 
-}
-@media screen and (max-width: 600px) {
-   .search{
-    float: none;
-    display: block;
-    text-align: left;
-    width: 100%;
-    margin: 0;
-    padding: 14px;
-  }
 }
 
 
