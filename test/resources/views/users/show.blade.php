@@ -5,14 +5,9 @@
 <h2>{{ $user->phone }}</h2>
 <h2>{{ $user->email }}</h2>
 <form method="GET" action="/placeappointments/{{$user->id}}">
-  		 {{ csrf_field() }}
-  		 @if (Route::has('login'))
-            <div class="top-right links">
-                @auth
-                    <button type="submit" class="btn btn-primary">Place Appointment</button>
-                @endauth
-            </div>
-        @endif
-  		
+  		{{ csrf_field() }}
+  		<div class="top-right links">
+            <button type="submit" class="btn btn-primary">Place Appointment</button>
+        </div>
 </form>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\User;
+use Auth;
 
 class userController extends Controller
 {
@@ -14,6 +15,10 @@ class userController extends Controller
     }
 
     public function show(User $user) {
+        if(Auth::check()) {
+            $loggedIn = Auth::user();
+            if($loggedIn->id === $user->id) return view('home');
+        }
     	return view('users.show',compact('user'));
     }
     public function showSearched(Request $request){
