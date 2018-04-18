@@ -9,26 +9,19 @@ use Auth;
 
 class AppointmentsController extends Controller
 {
-    public function makeAppointment(Request $request) {
-        if(Auth::check()) {
+    public function makeAppointment(Request $request) {   
             $user = Auth::user();
-            echo $user['id'];
-            echo "<br>";
-            echo $request->get('userID');
             $appointment = Appointment::create([
                 'user_id' => $user['id'],
                 'client_id' => $request->get('userID'),
                 'appointmentTime' => $request->get('appointmentTime')
             ]);
-        }
-        else {
-
-        }
-        dd($appointment);
+            return view('home');
     }
 
     public function index(User $user) {
-        return view('appointment',compact('user'));
+        if(Auth::check()) return view('appointment',compact('user'));
+        else return view('auth.register');
     }
 
 }
