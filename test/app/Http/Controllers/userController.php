@@ -24,13 +24,17 @@ class userController extends Controller
     public function showSearched(Request $request){
     	$users = User::all();
     	$searched = $request->input('searched');
-    	if($searched != "")
+    	if($searched != ""){
     		$matcheduser = User :: where('name','LIKE','%'.$searched.'%')
     									->orWhere('profession','LIKE','%'.$searched.'%')->get();
     		if(count($matcheduser) > 0)
     			return view('users.showAll')->withDetails($matcheduser)->withQuery($searched);
-    	
+        }
     	return view('users.showAll',compact('users'));
 
+    }
+    public function index()
+    {
+        return view('homenew');
     }
 }

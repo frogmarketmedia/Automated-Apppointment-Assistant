@@ -7,6 +7,8 @@ Route::get('/', function () {
 Route::get('/user', 'userController@showAll');
 Route::get('/user/{user}', 'userController@show');
 
+Route::get('/new', 'userController@index');
+
 Route::post('/user', 'userController@showSearched');
 
 

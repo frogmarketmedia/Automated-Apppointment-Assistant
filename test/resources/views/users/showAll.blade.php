@@ -5,6 +5,7 @@
     <form method="POST" action="/user">
       {{ csrf_field() }}
       <input type="text" placeholder="Search User's" name="searched">
+      <button type="submit"><img src="/image/search_icon.png"/></button>
     </form>
   </div>
   <div class="content" style="width: 2000px;">
@@ -75,13 +76,16 @@ li a:hover {
   -moz-column-count: 2; /* Firefox */
   column-count: 2;
 }
-.search input[type=text] {
+.search{
     float: right;
     padding: 6px;
     border: none;
     margin-top: 8px;
     margin-right: 16px;
     font-size: 17px;
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
 
 }
 

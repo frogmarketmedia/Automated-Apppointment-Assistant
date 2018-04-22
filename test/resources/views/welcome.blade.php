@@ -25,7 +25,8 @@
                 height: 100vh;
             }
 
-            .flex-center {
+            .imagepos {
+                padding-top: 50px;
                 align-items: center;
                 display: flex;
                 justify-content: center;
@@ -65,31 +66,27 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/home') }}">My Profile</a>
                         <a href="{{ url('/logout') }}">Logout</a>
+                        <a href="/user">User's</a>
 
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
+                        <a href="/user">User's</a>
                     @endauth
                 </div>
             @endif
-
+            <div class="imagepos">
+                <img src="\image\home_page2.jpg" height="300" width="500"> </img>
+            </div>
             <div class="content">
                 <div class="title m-b-md">
                     Appointment Assistant
                 </div>
-
-                <div class="links">
-                    <a href="{{ route('register') }}">Sign up</a>
-                    <a href="{{ route('login') }}">Log In</a>
-                    <a href="/user">Users</a>
-                </div>
             </div>
-        </div>
     </body>
 </html>
