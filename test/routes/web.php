@@ -11,6 +11,8 @@ Route::get('/new', 'userController@index');
 
 Route::post('/user', 'userController@showSearched');
 
+Route::get('/user/{user}/edit', 'EditController@edit');
+Route::post('/user/{user}/edit', 'EditController@update');
 
 Route::get('/login', 'loginController@index');
 Route::post('/login/enter', 'loginController@enter');
