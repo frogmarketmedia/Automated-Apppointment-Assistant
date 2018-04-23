@@ -22,6 +22,8 @@ Route::post('/signup', 'signupController@register');
 Route::get('/placeappointments/{user}', 'AppointmentsController@index');
 Route::post('/placeappointments/{user}', 'AppointmentsController@makeAppointment');
 
+Route::post('/setrating/{user}', 'PriorityController@setRating');
+
 Route::get('logout', 'Auth\LoginController@logout');
 
 Route::get('bootstrap', function ()
