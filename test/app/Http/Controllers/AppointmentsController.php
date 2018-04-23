@@ -21,7 +21,7 @@ class AppointmentsController extends Controller
 
     public function index(User $user) {
         if(Auth::check()) return view('appointment',compact('user'));
-        else return view('auth.register');
+        else return view('auth.login',compact('user'));
     }
 
 }

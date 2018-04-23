@@ -13,7 +13,7 @@
 </div>
 <div style="width :1200px;">
   <div style="width :500px;float:right;">
-    <h2 align="left">Appointment List To Me</h2>
+    <h2 align="left">Appointment List From Me</h2>
     <table>
        <tr >
           <th style=" padding-right: 20px;">Appoinment ID</th>
@@ -30,7 +30,7 @@
   `</table>
   </div>
   <div  style="width :500px; float:left;">
-    <h2 align="left">Appointment List From Me</h2>
+    <h2 align="left">Appointment List To Me</h2>
     <table>
        <tr >
           <th style=" padding-right: 20px;">Appoinment ID</th>
