@@ -18,6 +18,8 @@ class EditController extends Controller
     { 
         $user->name = $request->get('name');
         $user->email = $request->get('email');
+        $user->profession = $request->get('profession');
+        $user->phone = $request->get('phone');
         $user->password = bcrypt( $request->get('password'));
 
         $user->save();
