@@ -14,6 +14,8 @@ Route::post('/user', 'userController@showSearched');
 Route::get('/user/{user}/edit', 'EditController@edit');
 Route::post('/user/{user}/edit', 'EditController@update');
 
+Route::post('/user/deleteappointment/{user}','EditController@delete');
+
 Route::get('/login', 'loginController@index');
 Route::post('/login/enter', 'loginController@enter');
 

@@ -20,11 +20,27 @@
         <th >Appointment Time</th>
       </tr>
       @foreach($appointmentToMe as $appointment)
+      <div>
         <tr >
           <td style=" padding-right: 20px;">{{ $appointment->id }}</td>
           <td style=" padding-right: 20px;">{{ $appointment->client_id }}</td>
-          <td >{{ $appointment->appointmentTime }}</td>
+          <td style=" padding-right: 20px;">{{ $appointment->appointmentTime }}</td>
+           <td>
+            <form method="POST" action="/user/updateappointment/{{$user->id}}">
+              {{ csrf_field() }}
+              <input type="hidden" value="{{$appointment->id}}" name="update"/>
+              <button type="submit">Update</button>
+            </form>
+          </td>
+          <td>
+            <form method="POST" action="/user/deleteappointment/{{$user->id}}">
+              {{ csrf_field() }}
+              <input type="hidden" value="{{$appointment->id}}" name="delete"/>
+              <button type="submit">Delete</button>
+            </form>
+          </td>
         </tr>
+      </div>
       @endforeach
   </table>
 <br>
@@ -40,6 +56,20 @@
           <td style=" padding-right: 20px;">{{ $appointment->id }}</td>
           <td style=" padding-right: 20px;">{{ $appointment->user_id }}</td>
           <td >{{ $appointment->appointmentTime }}</td>
+          <td>
+            <form method="POST" action="/user/updateappointment/{{$user->id}}">
+              {{ csrf_field() }}
+              <input type="hidden" value="{{$appointment->id}}" name="update"/>
+              <button type="submit" >Update</button>
+            </form>
+          </td>
+          <td>
+            <form method="POST" action="/user/deleteappointment/{{$user->id}}">
+              {{ csrf_field() }}
+              <input type="hidden" value="{{$appointment->id}}" name="delete"/>
+              <button type="submit">Delete</button>
+            </form>
+          </td>
         </tr>
       @endforeach
  </table>

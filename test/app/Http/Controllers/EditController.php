@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Appointment;
 use App\User;
+use DB;
 
 class EditController extends Controller
 {
@@ -21,6 +23,14 @@ class EditController extends Controller
         $user->save();
 
         return view('home');
+    }
+    public function delete(Request $request){
+        $requested = $request->get('delete');
+        //echo $requested;
+        DB::table('appointments')->where('id',$requested)->delete();
+        return view('home');
+        //DB::table('appointments')->where('id',$requested)->delete();
+
     }
 
 }
