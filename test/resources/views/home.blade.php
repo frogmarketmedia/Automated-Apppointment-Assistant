@@ -25,7 +25,7 @@
           <td style=" padding-right: 20px;">{{ $appointment->id }}</td>
           <td style=" padding-right: 20px;">{{ $appointment->client_id }}</td>
           <td style=" padding-right: 20px;">{{ $appointment->appointmentTime }}</td>
-           <td>
+           <td style=" padding-right: 20px;">
             <form method="POST" action="/user/updateappointment/{{$user->id}}">
               {{ csrf_field() }}
               <input type="hidden" value="{{$appointment->id}}" name="update"/>
@@ -55,8 +55,8 @@
         <tr>
           <td style=" padding-right: 20px;">{{ $appointment->id }}</td>
           <td style=" padding-right: 20px;">{{ $appointment->user_id }}</td>
-          <td >{{ $appointment->appointmentTime }}</td>
-          <td>
+          <td style=" padding-right: 20px;">{{ $appointment->appointmentTime }}</td>
+          <td style=" padding-right: 20px;">
             <form method="POST" action="/user/updateappointment/{{$user->id}}">
               {{ csrf_field() }}
               <input type="hidden" value="{{$appointment->id}}" name="update"/>

@@ -24,13 +24,27 @@ class EditController extends Controller
 
         return view('home');
     }
-    public function delete(Request $request){
+    public function deleteAppointment(Request $request){
         $requested = $request->get('delete');
         //echo $requested;
         DB::table('appointments')->where('id',$requested)->delete();
         return view('home');
         //DB::table('appointments')->where('id',$requested)->delete();
 
+    }
+     public function updateAppointmentindex(Request $request,Appointment $appointment){
+        $requested = $request->get('update');
+        $app= Appointment::where('id','=',$requested)->first();;
+        return view('updateappointment', compact('app'));
+    }
+    public function updateAppointment(Request $request,Appointment $appointment){
+        $id=$request->get('id');
+        $appointment = Appointment::find($id);
+        $appointment->user_id=$request->get('user_id');
+        $appointment->client_id=$request->get('client_id');
+        $appointment->appointmentTime = $request->get('appointmentTime');
+        $appointment->save();
+        return view('home');
     }
 
 }

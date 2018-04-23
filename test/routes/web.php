@@ -14,7 +14,10 @@ Route::post('/user', 'userController@showSearched');
 Route::get('/user/{user}/edit', 'EditController@edit');
 Route::post('/user/{user}/edit', 'EditController@update');
 
-Route::post('/user/deleteappointment/{user}','EditController@delete');
+Route::post('/user/deleteappointment/{user}','EditController@deleteAppointment');
+Route::post('/user/updateappointment/{user}/updated','EditController@updateAppointment');
+Route::post('/user/updateappointment/{user}','EditController@updateAppointmentindex');
+
 
 Route::get('/login', 'loginController@index');
 Route::post('/login/enter', 'loginController@enter');

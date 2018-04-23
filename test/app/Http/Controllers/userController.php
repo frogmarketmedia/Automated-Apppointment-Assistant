@@ -27,6 +27,7 @@ class userController extends Controller
     	if($searched != ""){
     		$matcheduser = User :: where('name','LIKE','%'.$searched.'%')
     									->orWhere('profession','LIKE','%'.$searched.'%')->get();
+            dd($matcheduser);
     		if(count($matcheduser) > 0)
     			return view('users.showAll')->withDetails($matcheduser)->withQuery($searched);
         }

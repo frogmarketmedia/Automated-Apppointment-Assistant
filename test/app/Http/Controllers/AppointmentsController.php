@@ -15,6 +15,7 @@ class AppointmentsController extends Controller
                 'user_id' => $user['id'],
                 'client_id' => $request->get('userID'),
                 'appointmentTime' => $request->get('appointmentTime')
+                
             ]);
             return view('home');
     }
