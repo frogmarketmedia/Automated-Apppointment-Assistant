@@ -49,10 +49,15 @@
         <div class="container">
               <div class="center-block">
                 <h1>{{ $user->name }}</h1>
-<h2>{{ $user->profession }}</h2>
-<h2>{{ $user->phone }}</h2>
-<h2>{{ $user->email }}</h2>
+<h2>Profession: {{ $user->profession }}</h2>
+<h2>Phone: {{ $user->phone }}</h2>
+<h2>Email: {{ $user->email }}</h2>
+<h2>Rating: {{ $user->rating }}</h2>
+<br>
+<br>
+<br>
 <form id="demo" class="rating" method="POST" action="/setrating/{{$user->id}}">
+  {{ csrf_field() }}
   <input type="submit" style="position: absolute; left: -9999px"/>
   <label>
     <input type="radio" name="stars" value="1" />

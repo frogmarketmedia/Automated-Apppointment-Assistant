@@ -22,6 +22,7 @@ class CreateUsers extends Migration
             $table->String('password');
             $table->string('remember_token', 100)->nullable();
             $table->double('rating',2,1)->default(0.0);
+            $table->integer('rates')->default(0);
             $table->timestamps();
         });
     }
