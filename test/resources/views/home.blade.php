@@ -8,10 +8,19 @@
     $appointmentFromMe = Appointment::where('client_id','=', $user->id)->get();
 ?>
 <div align="left">
+ 
+  <img src="{{$user->avatar}}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
+    <form enctype="multipart/form-data" action="/user/profilepicupdated" method="POST">
+                <label>Update Profile Image</label>
+                <input type="file" name="avatar">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="submit" class="pull-right btn btn-sm btn-primary">
+    </form>
   <h1>{{ $user->name }}</h1>
   <h2>{{ $user->profession }}</h2>
-  <a href="/user/{{$user->id}}/edit" class="btn btn-success"> Edit </a>
+  <a href="/user/{{$user->id}}/edit" class="btn btn-success"> Edit Profile</a>
 </div>
+<br>
   <h2 align="left">Appointment List From Me</h2>
   <table>
      <tr >

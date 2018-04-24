@@ -18,6 +18,8 @@ Route::post('/user/deleteappointment/{user}','EditController@deleteAppointment')
 Route::post('/user/updateappointment/{user}/updated','EditController@updateAppointment');
 Route::post('/user/updateappointment/{user}','EditController@updateAppointmentindex');
 
+Route::post('/user/profilepicupdated','userController@update_photo');
+
 
 Route::get('/login', 'loginController@index');
 Route::post('/login/enter', 'loginController@enter');
