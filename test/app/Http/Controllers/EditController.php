@@ -19,9 +19,9 @@ class EditController extends Controller
     }
     public function update(Request $request,User $user)
     { 
-        $user->name = $request->get('name');
+        $user->name = ucfirst($request->get('name'));
         $user->email = $request->get('email');
-        $user->profession = $request->get('profession');
+        $user->profession = ucfirst($request->get('profession'));
         $user->phone = $request->get('phone');
         $user->password = bcrypt( $request->get('password'));
 
