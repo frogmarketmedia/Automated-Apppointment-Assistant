@@ -8,8 +8,9 @@ use App\User;
 class PriorityController extends Controller
 {
     public function setRating(Request $req,User $user) {
+    	$uud = Auth::user();
     	$rating = $user->rating;
-    	$new_rating = ($rating + $req->get('stars')) / ($user->rates + 1) ;    	
+    	$new_rating = ($rating * $user->rates + $req->get('stars')) / ($user->rates + 1) ;    	
     	$user->rating=$new_rating;
     	$user->rates=$user->rates+1;
     	$user->save();
