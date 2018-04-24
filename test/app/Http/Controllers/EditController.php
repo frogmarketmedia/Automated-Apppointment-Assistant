@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Appointment;
 use App\User;
 use DB;
+use App\Mail\AppointmentChanged;
+use App\Mail\AppointmentDeleted;
+use Illuminate\Support\Facades\Mail as Email;
 
 class EditController extends Controller
 {
@@ -29,6 +32,10 @@ class EditController extends Controller
     public function deleteAppointment(Request $request){
         $requested = $request->get('delete');
         //echo $requested;
+        
+        $appointment = Appointment::find($requested);
+        $send = User::find($appointment->client_id);
+        Email::to($send->email)->send(new AppointmentDeleted($appointment));
         DB::table('appointments')->where('id',$requested)->delete();
         return view('home');
         //DB::table('appointments')->where('id',$requested)->delete();
@@ -37,6 +44,7 @@ class EditController extends Controller
      public function updateAppointmentindex(Request $request,Appointment $appointment){
         $requested = $request->get('update');
         $app= Appointment::where('id','=',$requested)->first();;
+
         return view('updateappointment', compact('app'));
     }
     public function updateAppointment(Request $request,Appointment $appointment){
@@ -46,6 +54,8 @@ class EditController extends Controller
         $appointment->client_id=$request->get('client_id');
         $appointment->appointmentTime = $request->get('appointmentTime');
         $appointment->save();
+        $send = User::find($appointment->client_id);
+        Email::to($send->email)->send(new AppointmentChanged($appointment));
         return view('home');
     }
 
