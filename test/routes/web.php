@@ -24,6 +24,8 @@ Route::post('/user/profilepicupdated','userController@update_photo');
 Route::get('/login', 'loginController@index');
 Route::post('/login/enter', 'loginController@enter');
 
+Route::get('/createEvent', 'gCalendarController@create');
+
 
 Route::get('/signup', 'signupController@index');
 Route::post('/signup', 'signupController@register');
@@ -47,3 +49,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+Route::resource('gcalendar', 'gCalendarController');
+Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
