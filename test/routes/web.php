@@ -53,3 +53,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 Route::resource('gcalendar', 'gCalendarController');
 Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
+Route::get('gc/{appointment}','gCalendarController@store');

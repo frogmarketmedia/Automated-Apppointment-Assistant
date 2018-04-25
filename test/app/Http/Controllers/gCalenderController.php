@@ -8,6 +8,8 @@ use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use Google_Service_Calendar_EventDateTime;
 use Illuminate\Http\Request;
+use App\User;
+use App\Appointment;
 
 class gCalendarController extends Controller
 {
@@ -60,7 +62,8 @@ class gCalendarController extends Controller
         } else {
             $this->client->authenticate($_GET['code']);
             $_SESSION['access_token'] = $this->client->getAccessToken();
-            return redirect()->route('gcalendar.index');
+            //return redirect()->route('gcalendar.index');
+            return;
         }
     }
 
@@ -80,11 +83,13 @@ class gCalendarController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Appointment $appointment)
     {
         session_start();
-        $startDateTime = $request->start_date;
-        $endDateTime = $request->end_date;
+        $user = User::find($appointment->user_id);
+        $client = User::find($appointment->client_id);
+
+        $time = date('c',strtotime($appointment->appointmentTime));
 
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $this->client->setAccessToken($_SESSION['access_token']);
@@ -92,17 +97,18 @@ class gCalendarController extends Controller
 
             $calendarId = 'primary';
             $event = new Google_Service_Calendar_Event([
-                'summary' => $request->title,
-                'description' => $request->description,
-                'start' => ['dateTime' => $startDateTime],
-                'end' => ['dateTime' => $endDateTime],
+                'summary' => "Appointment Assistant",
+                'description' => "Appointment between $user->name and $client->name",
+                'start' => ['dateTime' => $time],
+                'end' => ['dateTime' => $time],
                 'reminders' => ['useDefault' => true],
+                'attendees' => ['email' => $user->email]
             ]);
             $results = $service->events->insert($calendarId, $event);
             if (!$results) {
                 return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
             }
-            return response()->json(['status' => 'success', 'message' => 'Event Created']);
+            return view('home');
         } else {
             return redirect()->route('oauthCallback');
         }

@@ -33,6 +33,7 @@ class AppointmentsController extends Controller
                 'client_id' => $client['id'],
                 'appointmentTime' => $timeStamp
                 ]);
+                return redirect("gc/$appointment->id");
             }
             else {
                 $hoise = "na mama hobe na ei time e";
