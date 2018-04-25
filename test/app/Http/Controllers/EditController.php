@@ -43,20 +43,46 @@ class EditController extends Controller
     }
      public function updateAppointmentindex(Request $request,Appointment $appointment){
         $requested = $request->get('update');
-        $app= Appointment::where('id','=',$requested)->first();;
+        $app= Appointment::where('id','=',$requested)->first();
 
         return view('updateappointment', compact('app'));
     }
     public function updateAppointment(Request $request,Appointment $appointment){
-        $id=$request->get('id');
-        $appointment = Appointment::find($id);
-        $appointment->user_id=$request->get('user_id');
-        $appointment->client_id=$request->get('client_id');
-        $appointment->appointmentTime = $request->get('appointmentTime');
-        $appointment->save();
-        $send = User::find($appointment->client_id);
-        Email::to($send->email)->send(new AppointmentChanged($appointment));
-        return view('home');
+        $client = Auth::user();
+        $user = User::find($request->get('user_id'));
+
+        $timeStamp = $request->get('appointmentTime');
+        $time = date('H:i:s', strtotime($timeStamp));
+        $app = $appointment;
+
+        $conflictingApp = Appointment::where([
+            'user_id' => $user->id,
+            'appointmentTime' => $timeStamp
+        ])->get();
+        
+        
+        if($conflictingApp->count()) {
+            $hoise = "na mama hobe na ei time e,onnor sathe appointment ase";
+            return view('updateappointment',compact('hoise','app'));
+        }
+        else if($time>$user['workStart'] && $time<$user['workStop']) {
+            //echo "ok";
+            $id=$request->get('id');
+            $appointment = Appointment::find($id);
+            $appointment->user_id=$request->get('user_id');
+            $appointment->client_id=$request->get('client_id');
+            $appointment->appointmentTime = $request->get('appointmentTime');
+            $appointment->save();
+            $send = User::find($appointment->client_id);
+            Email::to($send->email)->send(new AppointmentChanged($appointment));
+            return view('home');
+        }
+        else {
+            $hoise = "na mama hobe na ei time e dekha kore na";
+            return view('updateappointment',compact('hoise','app'));
+        }
+
+        
     }
 
 }

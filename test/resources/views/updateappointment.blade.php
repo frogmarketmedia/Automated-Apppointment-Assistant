@@ -11,6 +11,7 @@
   	Old  Appointment date and time:{{$app->appointmentTime}}<br>
     New Appointment date and time:
     <input type="datetime-local" name="appointmentTime" value="{{$app->appointmentTime}}">
+    <?php if(isset($hoise)) echo "<p>$hoise</p>" ?>
   </div>
   <button type="submit" class="btn btn-primary">Update</button>
 </form>
