@@ -53,6 +53,8 @@ class RegisterController extends Controller
             'profession' => ucfirst($data['profession']),
             'phone' => $data['phone'],
             'email' => $data['email'],
+            'workStart' => $data['workStart'],
+            'workStop' => $data['workStop'],
             'password' => Hash::make($data['password']),
             
         ]);

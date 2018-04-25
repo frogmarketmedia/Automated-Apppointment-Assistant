@@ -10,13 +10,34 @@ use Auth;
 class AppointmentsController extends Controller
 {
     public function makeAppointment(Request $request) {   
-            $user = Auth::user();
-            $appointment = Appointment::create([
+            $client = Auth::user();
+            $user = User::find($request->get('userID'));
+
+            $timeStamp = $request->get('appointmentTime');
+            $time = date('H:i:s', strtotime($timeStamp));
+
+            $conflictingApp = Appointment::where([
+                'user_id' => $user->id,
+                'appointmentTime' => $timeStamp
+            ])->get();
+            
+            
+            if($conflictingApp->count()) {
+                $hoise = "na mama hobe na ei time e,onnor sathe appointment ase";
+                return view('appointment',compact('hoise','user'));
+            }
+            else if($time>$user['workStart'] && $time<$user['workStop']) {
+                //echo "ok";
+                $appointment = Appointment::create([
                 'user_id' => $user['id'],
-                'client_id' => $request->get('userID'),
-                'appointmentTime' => $request->get('appointmentTime')
-                
-            ]);
+                'client_id' => $client['id'],
+                'appointmentTime' => $timeStamp
+                ]);
+            }
+            else {
+                $hoise = "na mama hobe na ei time e";
+                return view('appointment',compact('hoise','user'));
+            }
             return view('home');
     }
 

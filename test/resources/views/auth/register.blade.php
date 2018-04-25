@@ -65,6 +65,33 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="workStart" class="col-md-4 col-form-label text-md-right">{{ __('Working Hour Start') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="workStart" type="time" class="form-control{{ $errors->has('workStart') ? ' is-invalid' : '' }}" name="workStart" value="{{ old('workStart') }}" required autofocus>
+
+                                @if ($errors->has('workStart'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('workStart') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="workStop" class="col-md-4 col-form-label text-md-right">{{ __('Working Hour End') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="workStop" type="time" class="form-control{{ $errors->has('workStop') ? ' is-invalid' : '' }}" name="workStop" value="{{ old('workStop') }}" required autofocus>
+
+                                @if ($errors->has('workStop'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('workStop') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>

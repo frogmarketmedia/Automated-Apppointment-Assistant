@@ -24,6 +24,8 @@ class CreateUsers extends Migration
             $table->string('remember_token', 100)->nullable();
             $table->double('rating',2,1)->default(0.0);
             $table->integer('rates')->default(0);
+            $table->time('workStart')->default('08:00:00');
+            $table->time('workStop')->default('13:00:00');
             $table->timestamps();
         });
     }
