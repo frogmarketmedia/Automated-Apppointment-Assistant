@@ -17,7 +17,8 @@ class CreatePrioritiesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('client_id')->unsigned();
-            $table->smallInteger('priority');
+            $table->smallInteger('priority')->default(0);
+            $table->double('rating',2,1)->default(0.0);
             $table->timestamps();
         });
     }
