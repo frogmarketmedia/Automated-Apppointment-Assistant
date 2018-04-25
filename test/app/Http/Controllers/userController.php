@@ -7,10 +7,18 @@ use DB;
 use App\User;
 use Auth;
 use URL;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class userController extends Controller
 {
     public function showAll() {
-    	$users = User::all();
+        $page = LengthAwarePaginator::resolveCurrentPage();
+    	$total=DB::table('users')->count('id'); //Count the total record
+        $perPage=2;
+        $results = DB::table('users')->forPage($page, $perPage)->get();
+        $users=new LengthAwarePaginator($results, $total, $perPage, $page, [
+            'path' => LengthAwarePaginator::resolveCurrentPath(),
+        ]);
     	return view('users.showAll',compact('users'));
     }
 

@@ -16,17 +16,22 @@
     <ul align="left">
       @foreach($details as $user)
         <li><a href="/user/{{$user->id}}">{{ $user->name }}</a>{{ $user->profession }}</li>
-      @endforeach
+      @endforeach 
     </ul>
   @else
     <ul align="left">
       @foreach($users as $user)
         <li><a href="/user/{{$user->id}}">{{ $user->name }}</a>{{ $user->profession }}</li>
       @endforeach
+        <div class="pagination">{!! str_replace('/?', '?', $users->render()) !!}</div> 
     </ul>
+
   @endif
   
 </div>
+<br>
+<br>
+  
 <style>
 
  
@@ -88,8 +93,17 @@ li a:hover {
     column-count: 2;
 
 }
+.pagination{
+    transform-origin: unset;
+    transform-style: unset;
+    transform: unset;
+    transition: unset;
+    user-focus: unset;
+    border: none;
+
+}
 
 
 </style>
-
+ 
 @endsection
