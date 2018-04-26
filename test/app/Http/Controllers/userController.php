@@ -14,7 +14,7 @@ class userController extends Controller
     public function showAll() {
         $page = LengthAwarePaginator::resolveCurrentPage();
     	$total=DB::table('users')->count('id'); //Count the total record
-        $perPage=2;
+        $perPage=4;
         $results = DB::table('users')->forPage($page, $perPage)->get();
         $users=new LengthAwarePaginator($results, $total, $perPage, $page, [
             'path' => LengthAwarePaginator::resolveCurrentPath(),
