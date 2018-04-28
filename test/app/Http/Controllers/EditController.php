@@ -9,7 +9,8 @@ use DB;
 use App\Mail\AppointmentChanged;
 use App\Mail\AppointmentDeleted;
 use Illuminate\Support\Facades\Mail as Email;
-
+use App\Notifications\AppointmentDelete;
+use App\Notifications\AppointmentUpdate;
 class EditController extends Controller
 {
     public function edit(User $user)
@@ -35,6 +36,7 @@ class EditController extends Controller
         
         $appointment = Appointment::find($requested);
         $send = User::find($appointment->client_id);
+        $send->notify(new AppointmentDelete());
         Email::to($send->email)->send(new AppointmentDeleted($appointment));
         DB::table('appointments')->where('id',$requested)->delete();
         return view('home');
@@ -54,7 +56,7 @@ class EditController extends Controller
         $timeStamp = $request->get('appointmentTime');
         $time = date('H:i:s', strtotime($timeStamp));
         $app = $appointment;
-
+ 
         $conflictingApp = Appointment::where([
             'user_id' => $user->id,
             'appointmentTime' => $timeStamp
@@ -74,6 +76,7 @@ class EditController extends Controller
             $appointment->appointmentTime = $request->get('appointmentTime');
             $appointment->save();
             $send = User::find($appointment->client_id);
+            $send->notify(new AppointmentUpdate());
             Email::to($send->email)->send(new AppointmentChanged($appointment));
             return view('home');
         }

@@ -54,6 +54,8 @@ class userController extends Controller
             //dd($matcheduser);
     		if(count($matcheduser) > 0)
     			return view('users.showAll')->withDetails($matcheduser)->withQuery($searched);
+            else
+                return view('users.showAll',compact('users'));
         }
     	return view('users.showAll',compact('users'));
 

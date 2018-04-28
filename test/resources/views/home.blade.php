@@ -6,7 +6,24 @@
     $user = Auth::user();
     $appointmentToMe = Appointment::where('user_id','=', $user->id)->get();
     $appointmentFromMe = Appointment::where('client_id','=', $user->id)->get();
+    $notificationcount =count(Auth::user()->unreadNotifications);
+    $notify = Auth::user()->unreadNotifications;
 ?>
+<div align="right">
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+   <span class="glyphicon glyphicon-globe"></span> Notifications <span class="badge">{{$notificationcount}}</span></a> 
+   <ul class="dropdown-menu" role="menu">
+      <li>
+        @foreach($notify as $notification)
+        <a href="">{{$notification->type}}</a>
+        @endforeach
+      </li>
+    </ul>
+  </li>
+
+</div>
+
 <div align="left">
  
   <img src="{{$user->avatar}}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">

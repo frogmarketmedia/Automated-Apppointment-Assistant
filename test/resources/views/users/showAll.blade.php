@@ -7,6 +7,8 @@
         <form method="POST" action="/user">
           {{ csrf_field() }}
           <input type="text" placeholder="Search User's" name="searched">
+          <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+          </input>
           <button type="submit"><img src="/image/search_icon.png"/></button>
         </form>
       </div>
@@ -62,19 +64,19 @@
   
 <style>
 a:link {
-    color: red;
+    color: #34495E  ;
     text-decoration: none;
 }
 a:visited {
-    color: green;
+    color: #7F8C8D  ;
     text-decoration: none;
 }
 a:hover {
-    color: hotpink;
+    color: #2471A3;
     text-decoration: none;
 }
 a:active {
-    color: blue;
+    color: #7F8C8D  ;
     text-decoration: none;
 }
 .details img {
@@ -88,7 +90,11 @@ a:active {
     align-self: right;
     border: none;
     font-size: 17px;
-
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+input[type=text]:focus {
+    width: 20%;
 }
 .card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
