@@ -16,9 +16,10 @@ class AppointmentUpdate extends Notification
      *
      * @return void
      */
-    public function __construct()
+    protected $appointment;
+    public function __construct($appointment)
     {
-        //
+        $this->appointment=$appointment;
     }
 
     /**
@@ -56,6 +57,8 @@ class AppointmentUpdate extends Notification
     {
         return [
             'notificationTime'=> Carbon::now(),
+            'appointment'=>$this->appointment;
+            'user'=>$notifiable;
         ];
     }
     public function toArray($notifiable)

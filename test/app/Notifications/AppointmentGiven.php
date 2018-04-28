@@ -29,6 +29,7 @@ class AppointmentGiven extends Notification
      */
     public function via($notifiable)
     {
+        //dd($notifiable);
         return ['database'];
     }
 

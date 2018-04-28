@@ -7,8 +7,6 @@
         <form method="POST" action="/user">
           {{ csrf_field() }}
           <input type="text" placeholder="Search User's" name="searched">
-          <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
-          </input>
           <button type="submit"><img src="/image/search_icon.png"/></button>
         </form>
       </div>

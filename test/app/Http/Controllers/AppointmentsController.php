@@ -26,13 +26,14 @@ class AppointmentsController extends Controller
                 return view('appointment',compact('hoise','user'));
             }
             else if($time>$user['workStart'] && $time<$user['workStop']) {
-                $user->notify(new AppointmentGiven());
+                
                 //echo "ok";
                 $appointment = Appointment::create([
                 'user_id' => $user['id'],
                 'client_id' => $client['id'],
                 'appointmentTime' => $timeStamp
                 ]);
+                $user->notify(new AppointmentGiven($appointment));
                 return redirect("gc/$appointment->id");
             }
             else {

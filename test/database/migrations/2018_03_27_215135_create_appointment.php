@@ -21,8 +21,10 @@ class CreateAppointment extends Migration
                   ->references('id')->on('users')
                   ->onDelete('cascade');
             $table->timestamp('appointmentTime');
+            $table->boolean('approved')->default(false);
             $table->boolean('client')->default(true);
             $table->timestamps();
+
         });
     }
 

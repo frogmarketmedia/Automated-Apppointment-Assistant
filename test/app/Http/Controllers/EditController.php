@@ -33,10 +33,17 @@ class EditController extends Controller
     public function deleteAppointment(Request $request){
         $requested = $request->get('delete');
         //echo $requested;
-        
+        $user = Auth::user();
         $appointment = Appointment::find($requested);
-        $send = User::find($appointment->client_id);
-        $send->notify(new AppointmentDelete());
+        if($appointment->user_id==$user->id)
+        {
+            $send = User::find($appointment->client_id);
+        }
+        else
+        {
+            $send = User::find($appointment->user_id);
+        }
+        $send->notify(new AppointmentDelete($appointment));
         Email::to($send->email)->send(new AppointmentDeleted($appointment));
         DB::table('appointments')->where('id',$requested)->delete();
         return view('home');
@@ -75,8 +82,15 @@ class EditController extends Controller
             $appointment->client_id=$request->get('client_id');
             $appointment->appointmentTime = $request->get('appointmentTime');
             $appointment->save();
-            $send = User::find($appointment->client_id);
-            $send->notify(new AppointmentUpdate());
+            if($appointment->user_id==$user->id)
+            {
+                $send = User::find($appointment->client_id);
+            }
+            else
+            {
+                $send = User::find($appointment->user_id);
+            }
+            $send->notify(new AppointmentUpdate($appointment));
             Email::to($send->email)->send(new AppointmentChanged($appointment));
             return view('home');
         }

@@ -1,3 +1,16 @@
 git add .
 git commit -m ""
 git push -u origin master
+
+
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+   <span class="glyphicon glyphicon-globe" style="font-size:10px;"></span><span class="badge">{{$notificationcount}}</span></a> 
+   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="">Hello</a>
+    </li>
+  </ul>
+</li>
+

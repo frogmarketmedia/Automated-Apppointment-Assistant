@@ -12,13 +12,19 @@
 <div align="right">
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-   <span class="glyphicon glyphicon-globe"></span> Notifications <span class="badge">{{$notificationcount}}</span></a> 
+   <i class="fa fa-globe" style="font-size:20px;"></i><span class="badge">{{$notificationcount}}</span></a> 
    <ul class="dropdown-menu" role="menu">
+      @foreach($notify as $notification)
       <li>
-        @foreach($notify as $notification)
-        <a href="">{{$notification->type}}</a>
-        @endforeach
+        @if($notification->type=='App\Notifications\AppointmentGiven')
+          echo lala
+          @include('notifications.updateAppointment')
+        @elseif($notification->type=='App\Notifications\AppointmentDelete')
+          @include('notifications.cancelAppointment')
+          echo lalala
+        @endif
       </li>
+      @endforeach
     </ul>
   </li>
 
@@ -38,7 +44,7 @@
   <a href="/user/{{$user->id}}/edit" class="btn btn-success"> Edit Profile</a>
 </div>
 <br>
-  <h2 align="left">Appointment List From Me</h2>
+  <h2 align="left">Appointment List To Me</h2>
   <table>
      <tr >
         <th style=" padding-right: 20px;">Appoinment ID</th>
@@ -70,7 +76,7 @@
       @endforeach
   </table>
 <br>
-  <h2 align="left">Appointment List To Me</h2>
+  <h2 align="left">Appointment List From Me</h2>
   <table>
      <tr >
         <th style=" padding-right: 20px;">Appoinment ID</th>
