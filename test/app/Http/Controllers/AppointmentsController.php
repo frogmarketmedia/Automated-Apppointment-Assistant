@@ -34,7 +34,7 @@ class AppointmentsController extends Controller
                 'appointmentTime' => $timeStamp
                 ]);
                 $user->notify(new AppointmentGiven($appointment));
-                return redirect("gc/$appointment->id");
+                //return redirect("gc/$appointment->id");
             }
             else {
                 $hoise = "na mama hobe na ei time e";
