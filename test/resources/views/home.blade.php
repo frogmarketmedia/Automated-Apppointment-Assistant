@@ -20,6 +20,8 @@
           @include('notifications.appointmentGiven')
         @elseif($notification->type=='App\Notifications\AppointmentDelete')
           @include('notifications.cancelAppointment')
+        @elseif($notification->type=='App\Notifications\AppointmentApproved')
+          @include('notifications.approvedAppointment')
         @endif
       </li>
       @endforeach

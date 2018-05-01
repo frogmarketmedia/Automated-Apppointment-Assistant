@@ -8,8 +8,10 @@ use App\User;
 use DB;
 use App\Mail\AppointmentChanged;
 use App\Mail\AppointmentDeleted;
+use App\Mail\AppointmentApproval;
 use Illuminate\Support\Facades\Mail as Email;
 use App\Notifications\AppointmentDelete;
+use App\Notifications\AppointmentApproved;
 use App\Notifications\AppointmentUpdate;
 class EditController extends Controller
 {
@@ -100,6 +102,23 @@ class EditController extends Controller
         }
 
         
+    }
+    public function approved(Request $request)
+    {
+        $requested = $request->get('approved');
+        $appointment = Appointment::find($requested);
+        $userid = $appointment->user_id;
+        $clientid=$appointment->client_id;
+        $appointmenttime=$appointment->appointmentTime;
+        $appointment->user_id= $userid;
+        $appointment->client_id= $clientid;
+        $appointment->appointmentTime=$appointmenttime;
+        $appointment->approved = true;
+        $appointment->save();
+        $send = User::find($appointment->client_id);
+        $send->notify(new AppointmentApproved($appointment));
+        Email::to($send->email)->send(new AppointmentApproval($appointment));
+        return redirect('/home');
     }
 
 }
