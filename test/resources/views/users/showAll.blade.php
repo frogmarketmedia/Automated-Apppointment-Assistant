@@ -6,8 +6,9 @@
       <div class="search" >
         <form method="POST" action="/user">
           {{ csrf_field() }}
+          <span class="fa fa-search"></span>
           <input type="text" placeholder="Search User's" name="searched">
-          <button type="submit"><img src="/image/search_icon.png"/></button>
+          
         </form>
       </div>
     </div>
@@ -84,15 +85,22 @@ a:active {
 
   size: cover;
 }
-.search{
+/*.search{
     align-self: right;
     border: none;
     font-size: 17px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
-}
-input[type=text]:focus {
-    width: 20%;
+}*/
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+.search { position: relative; }
+.search input { text-indent: 30px;}
+.search .fa-search { 
+  position: absolute;
+  top: 7px;
+  right:175px;
+  font-size: 20px;
+  color: #A9A9A9;
 }
 .card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);

@@ -9,4 +9,4 @@ else
 	$appointmentgivenby = User::where('id','=',$notification->data['appointment']['client_id'])->first();
 }
 ?>
-Appointment Deleted by {{$appointmentgivenby->name}}
+<span style=" font-size: 12px;">Appointment Deleted by {{$appointmentgivenby->name}}</span>

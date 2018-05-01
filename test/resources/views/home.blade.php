@@ -17,11 +17,9 @@
       @foreach($notify as $notification)
       <li>
         @if($notification->type=='App\Notifications\AppointmentGiven')
-          echo lala
-          @include('notifications.updateAppointment')
+          @include('notifications.appointmentGiven')
         @elseif($notification->type=='App\Notifications\AppointmentDelete')
           @include('notifications.cancelAppointment')
-          echo lalala
         @endif
       </li>
       @endforeach

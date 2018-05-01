@@ -26,8 +26,6 @@ class AppointmentsController extends Controller
                 return view('appointment',compact('hoise','user'));
             }
             else if($time>$user['workStart'] && $time<$user['workStop']) {
-                
-                //echo "ok";
                 $appointment = Appointment::create([
                 'user_id' => $user['id'],
                 'client_id' => $client['id'],
