@@ -57,8 +57,8 @@ class AppointmentUpdate extends Notification
     {
         return [
             'notificationTime'=> Carbon::now(),
-            'appointment'=>$this->appointment;
-            'user'=>$notifiable;
+            'appointment'=>$this->appointment,
+            'user'=>$notifiable
         ];
     }
     public function toArray($notifiable)

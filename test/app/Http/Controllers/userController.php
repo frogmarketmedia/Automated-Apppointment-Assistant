@@ -30,9 +30,6 @@ class userController extends Controller
     	return view('users.show',compact('user'));
     }
     public function update_photo(Request $request){
-
-        // Handle the user upload of avatar
-        // Handle the user upload of avatar
         if($request->hasFile('avatar')){
             $avatar = $request->file('avatar');
             $avatar->move(public_path().'/image/',$avatar->getClientOriginalName());
@@ -42,8 +39,8 @@ class userController extends Controller
             $user->save();
             
         }
-        return view('home', array('user' => Auth::user()) );
-
+        //return view('home', array('user' => Auth::user()) );
+        return redirect('/home');
     }
     public function showSearched(Request $request){
     	$users = User::all();

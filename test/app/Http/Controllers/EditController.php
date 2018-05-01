@@ -28,7 +28,7 @@ class EditController extends Controller
 
         $user->save();
 
-        return view('home');
+        return redirect('/home');
     }
     public function deleteAppointment(Request $request){
         $requested = $request->get('delete');
@@ -46,7 +46,7 @@ class EditController extends Controller
         $send->notify(new AppointmentDelete($appointment));
         Email::to($send->email)->send(new AppointmentDeleted($appointment));
         DB::table('appointments')->where('id',$requested)->delete();
-        return view('home');
+        return redirect('/home');
         //DB::table('appointments')->where('id',$requested)->delete();
 
     }
@@ -92,7 +92,7 @@ class EditController extends Controller
             }
             $send->notify(new AppointmentUpdate($appointment));
             Email::to($send->email)->send(new AppointmentChanged($appointment));
-            return view('home');
+            return redirect('/home');
         }
         else {
             $hoise = "na mama hobe na ei time e dekha kore na";

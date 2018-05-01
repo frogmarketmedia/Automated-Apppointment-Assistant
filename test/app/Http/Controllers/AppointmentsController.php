@@ -38,7 +38,7 @@ class AppointmentsController extends Controller
                 $hoise = "na mama hobe na ei time e";
                 return view('appointment',compact('hoise','user'));
             }
-            return view('home');
+            return redirect('/home');
     }
 
     public function index(User $user) {
