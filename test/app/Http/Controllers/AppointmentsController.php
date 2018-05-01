@@ -29,7 +29,9 @@ class AppointmentsController extends Controller
                 $appointment = Appointment::create([
                 'user_id' => $user['id'],
                 'client_id' => $client['id'],
-                'appointmentTime' => $timeStamp
+                'appointmentTime' => $timeStamp,
+                'hour' => $request->get('hourD'),
+                'min' => $request->get('minD')
                 ]);
                 $user->notify(new AppointmentGiven($appointment));
                 //return redirect("gc/$appointment->id");
