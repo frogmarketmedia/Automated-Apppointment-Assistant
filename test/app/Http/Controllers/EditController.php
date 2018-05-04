@@ -5,8 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Appointment;
 use App\User;
-use App\Education;
-use App\Experience;
+use App\Educations;
+use App\Experiences;
 use DB;
 use App\Mail\AppointmentChanged;
 use App\Mail\AppointmentDeleted;
@@ -20,10 +20,11 @@ class EditController extends Controller
     public function edit(User $user)
     {   
         $user = Auth::user();
-        $education= Education :: where('user_id','=',$user->id);
-        $experience= Experience :: where('user_id','=',$user->id);
+        $education= Educations :: where('user_id','=',$user->id);
+        $experience= Experiences :: where('user_id','=',$user->id);
         return view('users.edit', compact('user','education','experience'));
     }
+
     public function update(Request $request,User $user)
     { 
         $user->name = ucfirst($request->get('name'));
@@ -36,6 +37,65 @@ class EditController extends Controller
 
         return redirect('/home');
     }
+    public function editEducation(User $user)
+    {   
+
+        $user = Auth::user();
+        return view('users.editEducation');
+    }
+    public function updateEducation(User $user,Request $request)
+    {
+        $user = Auth::user();
+        $institutions = $request->input('instituion');
+        $departments = $request->input('department');
+        $degrees = $request->input('degree');
+        $presents = $request->input('present');
+        $total=count($institutions);
+        for($i = 0; $i < $total; $i++)
+        {
+            if(strtolower($presents[$i])=="true")
+                $istrue=1;
+            else
+                $istrue=0;
+            Educations::create([
+                'user_id'=>$user->id,
+                'institution'=>$institutions[$i],
+                'department'=>$departments[$i],
+                'degree'=>$degrees[$i],
+                'present'=>$istrue,
+            ]);
+        }
+        return redirect('/home');
+    }
+    public function editExperience(User $user)
+    {   
+
+        $user = Auth::user();
+        return view('users.editExperience');
+    }
+    public function updateExperience(User $user,Request $request)
+    {   
+        //'user_id','institution','degree','present'
+        $workplace = $request->input('workplace');
+        $designation = $request->input('designation');
+        $present = $request->input('present');
+        $total=count($workplace);
+        for($i = 0; $i < $total; $i++)
+        {
+            if(strtolower($present[$i])=="true")
+                $istrue=1;
+            else
+                $istrue=0;
+            Experiences::create([
+                'user_id'=>$user->id,
+                'work_place'=>$workplace[$i],
+                'designation'=>$designation[$i],
+                'present'=>$istrue,
+            ]);
+        }
+        return redirect('/home');
+    }
+
     public function deleteAppointment(Request $request){
         $requested = $request->get('delete');
         //echo $requested;

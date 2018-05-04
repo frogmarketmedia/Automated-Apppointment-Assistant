@@ -87,6 +87,24 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label  class="col-md-4 col-form-label text-md-right">{{ __('Add Educational Background') }}</label>
+
+                            <div class="col-md-6">
+                                <a href="/user/{{ $user->id }}/edit/editeducation">
+                                    <button type="button" style="font-size: 25px"><i class="fa fa-pencil"></i></button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label  class="col-md-4 col-form-label text-md-right">{{ __('Add Work Experience') }}</label>
+
+                            <div class="col-md-6">
+                                <a href="/user/{{ $user->id }}/edit/editexperience">
+                                    <button type="button" style="font-size: 25px"><i class="fa fa-pencil"></i></button>
+                                </a>
+                            </div>
+                        </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

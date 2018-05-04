@@ -20,8 +20,10 @@ class CreateEducation extends Migration
                   ->references('id')->on('users')
                   ->onDelete('cascade');
             $table->String('institution')->nullable();
+            $table->String('department')->nullable();
             $table->String('degree')->nullable();
             $table->boolean('present')->default(false);
+            $table->timestamps();
             
         });
     }

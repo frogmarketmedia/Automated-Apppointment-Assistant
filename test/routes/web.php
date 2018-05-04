@@ -7,12 +7,16 @@ Route::get('/', function () {
 Route::get('/user', 'userController@showAll');
 Route::get('/user/{user}', 'userController@show');
 
-Route::get('/new', 'userController@index');
-
 Route::post('/user', 'userController@showSearched');
 
 Route::get('/user/{user}/edit', 'EditController@edit');
 Route::post('/user/{user}/edit', 'EditController@update');
+
+Route::get('/user/{user}/edit/editeducation', 'EditController@editEducation');
+Route::post('/user/{user}/edit/editeducation','EditController@updateEducation');
+
+Route::get('/user/{user}/edit/editexperience', 'EditController@editExperience');
+Route::post('/user/{user}/edit/editexperience','EditController@updateExperience');
 
 Route::post('/user/approved', 'EditController@approved');
 

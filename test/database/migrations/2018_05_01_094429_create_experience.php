@@ -22,6 +22,7 @@ class CreateExperience extends Migration
             $table->String('work_place')->nullable();
             $table->String('designation')->nullable();
             $table->boolean('present')->default(false);
+            $table->timestamps();
         });
     }
 
