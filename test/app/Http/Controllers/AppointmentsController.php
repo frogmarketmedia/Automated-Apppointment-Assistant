@@ -6,22 +6,57 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Appointment;
 use Auth;
+use DB;
 use App\Notifications\AppointmentGiven;
+use Carbon\Carbon;
+
 class AppointmentsController extends Controller
 {
     public function makeAppointment(Request $request) {   
             $client = Auth::user();
             $user = User::find($request->get('userID'));
             $timeStamp = $request->get('appointmentTime');
-            $time = date('H:i:s', strtotime($timeStamp));
+            $timeStampCarbon = Carbon::createFromTimeString($timeStamp);
+            $appEnd = Carbon::createFromTimeString($timeStamp);
+            $appEnd->hour += $request->get('hourD');
+            $appEnd->minute += $request->get('minD');
+            $userEnd = Carbon::createFromTimeString($user['workStop']);
 
-            $conflictingApp = Appointment::where([
-                'user_id' => $user->id,
-                'appointmentTime' => $timeStamp
-            ])->get();
+
+            $time = date('H:i:s', strtotime($timeStamp));
+            $date = date('Y-m-d', strtotime($timeStamp));
+
+            $conflictingApp = Appointment::whereRaw("DATE(appointmentTime) = '$date'")->get();
+
+            foreach ($conflictingApp as $capp => &$pcapp) {
+                $timeAppStart = Carbon::createFromTimeString($pcapp->appointmentTime);
+                $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
+                $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
+                $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
+                if(!($timeStampCarbon>$timeAppStart && $timeStampCarbon<$timeAppEnd)) {
+                    unset($conflictingApp[$capp]);
+                }
+            }
+
+            foreach ($conflictingApp as $capp => &$pcapp) {
+                $timeAppStart = Carbon::createFromTimeString($pcapp->appointmentTime);
+                $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
+                $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
+                $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
+                echo "$timeAppStart----------$timeAppEnd-----------$timeStampCarbon<br>";
+            }
             
-            
-            if($conflictingApp->count()) {
+            $now = new Carbon();
+
+            if($timeStampCarbon<$now) {
+                $hoise = "na mama past e appointment dewa jabe nah :p";
+                return view('appointment',compact('hoise','user'));
+            }
+            else if($appEnd > $userEnd) {
+                $hoise = "shale chor,appointment duration crosses the working hour,pakad liya!hu!!";
+                return view('appointment',compact('hoise','user'));
+            }
+            else if($conflictingApp->count()) {
                 $hoise = "na mama hobe na ei time e,onnor sathe appointment ase";
                 return view('appointment',compact('hoise','user'));
             }
