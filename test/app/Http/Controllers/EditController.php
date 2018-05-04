@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Appointment;
 use App\User;
+use App\Education;
+use App\Experience;
 use DB;
 use App\Mail\AppointmentChanged;
 use App\Mail\AppointmentDeleted;
@@ -18,7 +20,9 @@ class EditController extends Controller
     public function edit(User $user)
     {   
         $user = Auth::user();
-        return view('users.edit', compact('user'));
+        $education= Education :: where('user_id','=',$user->id);
+        $experience= Experience :: where('user_id','=',$user->id);
+        return view('users.edit', compact('user','education','experience'));
     }
     public function update(Request $request,User $user)
     { 

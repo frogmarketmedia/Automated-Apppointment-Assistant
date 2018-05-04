@@ -14,13 +14,10 @@ class AppointmentsController extends Controller
             $user = User::find($request->get('userID'));
             $timeStamp = $request->get('appointmentTime');
             $time = date('H:i:s', strtotime($timeStamp));
-
             $conflictingApp = Appointment::where([
                 'user_id' => $user->id,
                 'appointmentTime' => $timeStamp
             ])->get();
-            
-            
             if($conflictingApp->count()) {
                 $hoise = "na mama hobe na ei time e,onnor sathe appointment ase";
                 return view('appointment',compact('hoise','user'));
