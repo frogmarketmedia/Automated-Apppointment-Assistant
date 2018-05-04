@@ -20,8 +20,8 @@ class EditController extends Controller
     public function edit(User $user)
     {   
         $user = Auth::user();
-        $education= Educations :: where('user_id','=',$user->id);
-        $experience= Experiences :: where('user_id','=',$user->id);
+        $education= Educations::where('user_id','=',$user->id)->get();
+        $experience= Experiences::where('user_id','=',$user->id)->get();
         return view('users.edit', compact('user','education','experience'));
     }
 
@@ -32,9 +32,52 @@ class EditController extends Controller
         $user->profession = ucfirst($request->get('profession'));
         $user->phone = $request->get('phone');
         $user->password = bcrypt( $request->get('password'));
-
         $user->save();
 
+        $userid=$user->id;
+        $eduid=$request->get('eduid');
+        if(!is_null($eduid))
+        {
+            $institution = $request->get('instituion');
+            $department = $request->get('department');
+            $degree = $request->get('degree');
+            $present = $request->get('present');
+            $totaledu=count($request->get('eduid'));
+            for($i=0 ; $i < $totaledu ; $i++) {
+                if(strtolower($present[$i])=="true")
+                    $istrue=1;
+                else
+                    $istrue=0;
+                $education=Educations::find($eduid[$i]);
+                $education->user_id=$userid;
+                $education->institution=$institution[$i];
+                $education->department=$department[$i];
+                $education->degree=$degree[$i];
+                $education->present=$istrue;
+                $education->save();
+            }
+        }
+        $exid=$request->get('exid');
+        if(!is_null($exid))
+        {
+            $totalex=count($request->get('exid'));
+            $company =$request->get('company');
+            $designation=$request->get('designation');
+            $present=$request->get('presentex');
+            for($i=0 ; $i < $totalex ; $i++) {
+                if(strtolower($present[$i])=="true")
+                    $istrue=1;
+                else
+                    $istrue=0;
+                $experience=Experiences::find($exid[$i]);
+                $experience->user_id=$userid;
+                $experience->work_place=$company[$i];
+                $experience->designation=$designation[$i];
+                $experience->present=$istrue;
+                $experience->save();
+
+            }
+        }
         return redirect('/home');
     }
     public function editEducation(User $user)

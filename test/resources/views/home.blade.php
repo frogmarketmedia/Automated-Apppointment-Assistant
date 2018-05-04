@@ -6,29 +6,7 @@
     $user = Auth::user();
     $appointmentToMe = Appointment::where('user_id','=', $user->id)->get();
     $appointmentFromMe = Appointment::where('client_id','=', $user->id)->get();
-    $notificationcount =count(Auth::user()->unreadNotifications);
-    $notify = Auth::user()->unreadNotifications;
 ?>
-<div align="right">
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-   <i class="fa fa-globe" style="font-size:20px;"></i><span class="badge">{{$notificationcount}}</span></a> 
-   <ul class="dropdown-menu" role="menu">
-      @foreach($notify as $notification)
-      <li>
-        @if($notification->type=='App\Notifications\AppointmentGiven')
-          @include('notifications.appointmentGiven')
-        @elseif($notification->type=='App\Notifications\AppointmentDelete')
-          @include('notifications.cancelAppointment')
-        @elseif($notification->type=='App\Notifications\AppointmentApproved')
-          @include('notifications.approvedAppointment')
-        @endif
-      </li>
-      @endforeach
-    </ul>
-  </li>
-
-</div>
 
 <div align="left">
  
