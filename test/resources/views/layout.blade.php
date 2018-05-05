@@ -50,7 +50,7 @@
                     Users</a>
                   </li>
                   <li>
-                     <a href="logout" role="button" style="text-decoration: none; color: #1A5276;">
+                     <a href="/logout" role="button" style="text-decoration: none; color: #1A5276;">
                     Logout</a>
                   </li>
                 </ul>
