@@ -32,7 +32,7 @@
               }
           ?>
             @auth
-            <div style="padding-left: 700px;">
+            <div style="padding-left: 600px;">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-decoration: none; color: white;">
                 <strong>{{$user->name}}</strong></a> 
@@ -69,6 +69,8 @@
                       @include('notifications.cancelAppointment')
                     @elseif($notification->type=='App\Notifications\AppointmentApproved')
                       @include('notifications.approvedAppointment')
+                    @elseif($notification->type=='App\Notifications\AppointmentUpdate')
+                      @include('notifications.updateAppointment')
                     @endif
                   </li>
                   @endforeach

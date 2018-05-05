@@ -33,6 +33,7 @@ Route::post('/login/enter', 'loginController@enter');
 
 Route::get('/createEvent', 'gCalendarController@create');
 
+Route::post('/delete/notification', 'EditController@deleteNotification');
 
 Route::get('/signup', 'signupController@index');
 Route::post('/signup', 'signupController@register');

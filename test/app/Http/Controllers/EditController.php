@@ -144,19 +144,18 @@ class EditController extends Controller
     public function deleteAppointment(Request $request){
         $requested = $request->get('delete');
         //echo $requested;
+        $requestid=$request->get('notificationidd');
+        if(!is_null($requestid))
+        {
+            DB::table('notifications')->where('id','=',$requestid)->delete();
+        }
         $user = Auth::user();
         $appointment = Appointment::find($requested);
-        if($appointment->user_id==$user->id)
-        {
-            $send = User::find($appointment->client_id);
-        }
-        else
-        {
-            $send = User::find($appointment->user_id);
-        }
+        $send = User::find($appointment->client_id);
         $send->notify(new AppointmentDelete($appointment));
         Email::to($send->email)->send(new AppointmentDeleted($appointment));
         DB::table('appointments')->where('id',$requested)->delete();
+
         return redirect('/home');
         //DB::table('appointments')->where('id',$requested)->delete();
 
@@ -260,7 +259,11 @@ class EditController extends Controller
                 $send = User::find($appointment->client_id);
                 $send->notify(new AppointmentUpdate($appointment));
                 Email::to($send->email)->send(new AppointmentChanged($appointment));
-                
+                $requestid=$request->get('notificationidu');
+                if(!is_null($requestid))
+                {
+                    DB::table('notifications')->where('id','=',$requestid)->delete();
+                }
                 //return redirect("gc/$appointment->id");
             }
             else {
@@ -273,6 +276,8 @@ class EditController extends Controller
     public function approved(Request $request)
     {
         $requested = $request->get('approved');
+        $requestid=$request->get('notificationida');
+        DB::table('notifications')->where('id','=',$requestid)->delete();
         $appointment = Appointment::find($requested);
         $userid = $appointment->user_id;
         $clientid=$appointment->client_id;
@@ -285,6 +290,12 @@ class EditController extends Controller
         $send = User::find($appointment->client_id);
         $send->notify(new AppointmentApproved($appointment));
         Email::to($send->email)->send(new AppointmentApproval($appointment));
+        return redirect('/home');
+    }
+    public function deleteNotification(Request $request)
+    {
+        $requestid=$request->get('notificationid');
+        DB::table('notifications')->where('id','=',$requestid)->delete();
         return redirect('/home');
     }
 
