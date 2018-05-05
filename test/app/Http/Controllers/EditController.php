@@ -257,14 +257,7 @@ class EditController extends Controller
                 $appointment->client_id=$request->get('client_id');
                 $appointment->appointmentTime = $request->get('appointmentTime');
                 $appointment->save();
-                if($appointment->user_id==$user->id)
-                {
-                    $send = User::find($appointment->client_id);
-                }
-                else
-                {
-                    $send = User::find($appointment->user_id);
-                }
+                $send = User::find($appointment->client_id);
                 $send->notify(new AppointmentUpdate($appointment));
                 Email::to($send->email)->send(new AppointmentChanged($appointment));
                 
