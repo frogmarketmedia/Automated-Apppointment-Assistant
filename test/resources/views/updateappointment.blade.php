@@ -11,9 +11,16 @@
   	 <input type="hidden" value="{{$app->id}}" name="id"/><br>
   	 <input type="hidden" value="{{$app->user_id}}" name="user_id"/><br>
   	 <input type="hidden" value="{{$app->client_id}}" name="client_id"/><br>
-  	Old  Appointment date and time:{{$app->appointmentTime}}<br>
-    Old  Appointment duration: {{$app->hour}}Hr  {{$app->min}}Min<br>
-    New Appointment date and time:
+    <?php
+      use App\User;
+      $username=User::find($app->client_id);
+      $user = Auth::user();
+    ?>
+    <h2 style="text-shadow: 2px 2px 5px #00004d;"><strong>Appointment From: </strong>{{$username->name}}</h2>
+  	<h2 style="text-shadow: 2px 2px 5px #00004d;"><strong>Old  Appointment date and time:</strong>{{$app->appointmentTime}}</h2>
+    <h2 style="text-shadow: 2px 2px 5px #00004d;"><strong>Old  Appointment duration: </strong>{{$app->hour}}Hr  {{$app->min}}Min </h2>
+    <h2 style="text-shadow: 2px 2px 5px #00004d;"><strong>Works From </strong>{{$user->workStart }} <strong> To </strong> {{$user->workStop }}</h2>
+    <h2 style="text-shadow: 2px 2px 5px #00004d;"></strong>New Appointment date and time:</strong></h2>
     <input type="datetime-local" name="appointmentTime" value="{{$app->appointmentTime}}">
     Hour:
     <input type="number" name="hourD" min="0" max="3" value="0">
