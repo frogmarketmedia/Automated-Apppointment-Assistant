@@ -4,8 +4,8 @@
 <?php 
     use App\Appointment;
     $user = Auth::user();
-    $appointmentToMe = Appointment::where('user_id','=', $user->id)->get();
-    $appointmentFromMe = Appointment::where('client_id','=', $user->id)->get();
+    $appointmentToMe = Appointment::where('user_id','=', $user->id)->ordeBy('appointmentTime')->get();
+    $appointmentFromMe = Appointment::where('client_id','=', $user->id)->ordeBy('appointmentTime')->get();
 ?>
 
 <div align="left">
