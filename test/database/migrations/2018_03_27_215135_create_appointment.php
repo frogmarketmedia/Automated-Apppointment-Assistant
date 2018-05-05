@@ -22,7 +22,6 @@ class CreateAppointment extends Migration
                   ->onDelete('cascade');
             $table->dateTime('appointmentTime');
             $table->boolean('approved')->default(false);
-            $table->boolean('client')->default(true);
             $table->smallInteger('hour')->default(0);
             $table->smallInteger('min')->default(20);
             $table->timestamps();
