@@ -168,118 +168,113 @@ class EditController extends Controller
         return view('updateappointment', compact('app'));
     }
     public function updateAppointment(Request $request){
-        // $client = Auth::user();
-        // $user = User::find($request->get('user_id'));
-
-        // $timeStamp = $request->get('appointmentTime');
-        // $time = date('H:i:s', strtotime($timeStamp));
-        // $app = $appointment;
- 
-        // $conflictingApp = Appointment::where([
-        //     'user_id' => $user->id,
-        //     'appointmentTime' => $timeStamp
-        // ])->get();
-        
-        
-        // if($conflictingApp->count()) {
-        //     $hoise = "na mama hobe na ei time e,onnor sathe appointment ase";
-        //     return view('updateappointment',compact('hoise','app'));
-        // }
-        // else if($time>$user['workStart'] && $time<$user['workStop']) {
-            // echo "ok";
-            // $id=$request->get('id');
-            // $appointment = Appointment::find($id);
-            // $appointment->user_id=$request->get('user_id');
-            // $appointment->client_id=$request->get('client_id');
-            // $appointment->appointmentTime = $request->get('appointmentTime');
-            // $appointment->save();
-            // if($appointment->user_id==$user->id)
-            // {
-            //     $send = User::find($appointment->client_id);
-            // }
-            // else
-            // {
-            //     $send = User::find($appointment->user_id);
-            // }
-            // $send->notify(new AppointmentUpdate($appointment));
-            // Email::to($send->email)->send(new AppointmentChanged($appointment));
-            // return redirect('/home');
-        // }
-        // else {
-        //     $hoise = "na mama hobe na ei time e dekha kore na";
-        //     return view('updateappointment',compact('hoise','app'));
-        // }
-
-        $client = Auth::user();
-        $user = User::find($request->get('userID'));
-        $timeStamp = $request->get('appointmentTime');
-        $timeStampCarbon = Carbon::createFromTimeString($timeStamp);
-        $appEnd = Carbon::createFromTimeString($timeStamp);
-        $appEnd->hour += $request->get('hourD');
-        $appEnd->minute += $request->get('minD');
-        $userEnd = Carbon::createFromTimeString($user['workStop']);
+            $client = Auth::user();
+            $user = User::find($request->get('user_id'));
+            $timeStamp = $request->get('appointmentTime');
+            $timeStampCarbon = Carbon::createFromTimeString($timeStamp);
+            $appEnd = Carbon::createFromTimeString($timeStamp);
+            $appEnd->hour += $request->get('hourD');
+            $appEnd->minute += $request->get('minD');
+            $userEnd = Carbon::createFromTimeString($user['workStop']);
 
 
-        $time = date('H:i:s', strtotime($timeStamp));
-        $date = date('Y-m-d', strtotime($timeStamp));
+            $time = date('H:i:s', strtotime($timeStamp));
+            $date = date('Y-m-d', strtotime($timeStamp));
 
-        $conflictingApp = Appointment::whereRaw("DATE(appointmentTime) = '$date'")->get();
+            $conflictingApp = Appointment::whereRaw("DATE(appointmentTime) = '$date'")->orderBy('appointmentTime')->get();
+            $freeTime = array();
 
-        foreach ($conflictingApp as $capp => &$pcapp) {
-            $timeAppStart = Carbon::createFromTimeString($pcapp->appointmentTime);
-            $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
-            $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
-            $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
-            if(!($timeStampCarbon>$timeAppStart && $timeStampCarbon<$timeAppEnd)) {
-                unset($conflictingApp[$capp]);
+            //dd($conflictingApp);
+            $index = 0;
+            foreach ($conflictingApp as $capp => &$pcapp) {
+//                echo "$pcapp<br>";
+                if($capp<sizeof($conflictingApp)-1) {
+                    $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
+                    $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
+                    $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
+
+                    $timeAppStart = Carbon::createFromTimeString($conflictingApp[$capp+1]->appointmentTime);
+                    
+                    if($capp==0) {
+                        $freeTime[$index++] = $user['workStart'];
+                        $freeTime[$index++] = Carbon::createFromTimeString($pcapp->appointmentTime)->format('H:i:s');
+                    }
+
+                    $freeTime[$index++] = $timeAppEnd->format('H:i:s');
+                    $freeTime[$index++] = $timeAppStart->format('H:i:s');                    
+                }
+                else{
+                    $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
+                    $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
+                    $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
+
+                    $freeTime[$index++] = $timeAppEnd->format('H:i:s');
+                    $freeTime[$index++] = $user['workStop'];
+                }
             }
-        }
 
-        foreach ($conflictingApp as $capp => &$pcapp) {
-            $timeAppStart = Carbon::createFromTimeString($pcapp->appointmentTime);
-            $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
-            $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
-            $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
-            echo "$timeAppStart----------$timeAppEnd-----------$timeStampCarbon<br>";
-        }
-        
-        $now = new Carbon();
+//            dd($freeTime);
 
-        if($timeStampCarbon<$now) {
-            $hoise = "na mama past e appointment dewa jabe nah :p";
-            return view('updateappointment',compact('hoise','user'));
-        }
-        else if($appEnd > $userEnd) {
-            $hoise = "shale chor,appointment duration crosses the working hour,pakad liya!hu!!";
-            return view('updateappointment',compact('hoise','user'));
-        }
-        else if($conflictingApp->count()) {
-            $hoise = "na mama hobe na ei time e,onnor sathe appointment ase";
-            return view('updateappointment',compact('hoise','user'));
-        }
-        else if($time>$user['workStart'] && $time<$user['workStop']) {
-            $id=$request->get('id');
-            $appointment = Appointment::find($id);
-            $appointment->user_id=$request->get('user_id');
-            $appointment->client_id=$request->get('client_id');
-            $appointment->appointmentTime = $request->get('appointmentTime');
-            $appointment->save();
-            if($appointment->user_id==$user->id)
-            {
-                $send = User::find($appointment->client_id);
+            foreach ($conflictingApp as $capp => &$pcapp) {
+                $timeAppStart = Carbon::createFromTimeString($pcapp->appointmentTime);
+                $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
+                $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
+                $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
+                if(!($timeStampCarbon>=$timeAppStart && $timeStampCarbon<=$timeAppEnd) && !($appEnd>=$timeAppStart && $appEnd<=$timeAppEnd)) {
+                    unset($conflictingApp[$capp]);
+                }
             }
-            else
-            {
-                $send = User::find($appointment->user_id);
+
+            foreach ($conflictingApp as $capp => &$pcapp) {
+                $timeAppStart = Carbon::createFromTimeString($pcapp->appointmentTime);
+                $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
+                $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
+                $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
+                echo "$timeAppStart----------$timeAppEnd-----------$timeStampCarbon<br>";
             }
-            $send->notify(new AppointmentUpdate($appointment));
-            Email::to($send->email)->send(new AppointmentChanged($appointment));
+            
+            $now = new Carbon();
+
+            if($timeStampCarbon<$now) {
+                $hoise = "na mama past e appointment dewa jabe nah :p";
+                return view('updateappointment',compact('hoise','user'));
+            }
+            else if($appEnd->format('H:i:s') > $userEnd->format('H:i:s')) {
+                $hoise = "$appEnd ==$userEnd\n shale chor,appointment duration crosses the working hour,pakad liya!hu!!";
+                return view('updateappointment',compact('hoise','user'));
+            }
+            else if($conflictingApp->count()) {
+                $hoise = "na mama hobe na ei time e,onnor sathe appointment ase<br>";
+                for($key=0;$key<sizeof($freeTime)-1;$key=$key+2) {
+                    $hoise .= $freeTime[$key]." theke ".$freeTime[$key+1]."free ase mama<br>";
+                }
+                return view('updateappointment',compact('hoise','user'));
+            }
+            else if($time>$user['workStart'] && $time<$user['workStop']) {
+                $id=$request->get('id');
+                $appointment = Appointment::find($id);
+                $appointment->user_id=$request->get('user_id');
+                $appointment->client_id=$request->get('client_id');
+                $appointment->appointmentTime = $request->get('appointmentTime');
+                $appointment->save();
+                if($appointment->user_id==$user->id)
+                {
+                    $send = User::find($appointment->client_id);
+                }
+                else
+                {
+                    $send = User::find($appointment->user_id);
+                }
+                $send->notify(new AppointmentUpdate($appointment));
+                Email::to($send->email)->send(new AppointmentChanged($appointment));
+                
+                //return redirect("gc/$appointment->id");
+            }
+            else {
+                $hoise = "na mama hobe na ei time e";
+                return view('updateappointment',compact('hoise','user'));
+            }
             return redirect('/home');
-        }
-        else {
-            $hoise = "na mama hobe na ei time e";
-            return view('updateappointment',compact('hoise','user'));
-        }
         
     }
     public function approved(Request $request)
