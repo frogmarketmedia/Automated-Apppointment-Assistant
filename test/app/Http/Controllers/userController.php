@@ -46,7 +46,7 @@ class userController extends Controller
     	$users = User::all();
     	$searched = $request->input('searched');
     	if($searched != ""){
-    		$matcheduser = User :: where('name','LIKE','%'.$searched.'%')
+    		$matcheduser = User::where('name','LIKE','%'.$searched.'%')
     							   ->orWhere('profession','LIKE','%'.$searched.'%')
                                    ->get();
     		if(count($matcheduser) > 0)

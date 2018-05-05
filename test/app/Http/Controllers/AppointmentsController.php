@@ -52,8 +52,8 @@ class AppointmentsController extends Controller
                 $hoise = "na mama past e appointment dewa jabe nah :p";
                 return view('appointment',compact('hoise','user'));
             }
-            else if($appEnd > $userEnd) {
-                $hoise = "shale chor,appointment duration crosses the working hour,pakad liya!hu!!";
+            else if($appEnd->format('H:i:s') > $userEnd->format('H:i:s')) {
+                $hoise = "$appEnd ==$userEnd\n shale chor,appointment duration crosses the working hour,pakad liya!hu!!";
                 return view('appointment',compact('hoise','user'));
             }
             else if($conflictingApp->count()) {

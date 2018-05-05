@@ -6,29 +6,7 @@
     $user = Auth::user();
     $appointmentToMe = Appointment::where('user_id','=', $user->id)->get();
     $appointmentFromMe = Appointment::where('client_id','=', $user->id)->get();
-    $notificationcount =count(Auth::user()->unreadNotifications);
-    $notify = Auth::user()->unreadNotifications;
 ?>
-<div align="right">
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-   <i class="fa fa-globe" style="font-size:20px;"></i><span class="badge">{{$notificationcount}}</span></a> 
-   <ul class="dropdown-menu" role="menu">
-      @foreach($notify as $notification)
-      <li>
-        @if($notification->type=='App\Notifications\AppointmentGiven')
-          @include('notifications.appointmentGiven')
-        @elseif($notification->type=='App\Notifications\AppointmentDelete')
-          @include('notifications.cancelAppointment')
-        @elseif($notification->type=='App\Notifications\AppointmentApproved')
-          @include('notifications.approvedAppointment')
-        @endif
-      </li>
-      @endforeach
-    </ul>
-  </li>
-
-</div>
 
 <div align="left">
  
@@ -43,80 +21,83 @@
   <h2>{{ $user->profession }}</h2>
   <a href="/user/{{$user->id}}/edit" class="btn btn-success"> Edit Profile</a>
 </div>
-<br>
-  <h2 align="left">Appointment List To Me</h2>
-  <table>
-     <tr >
-        <th style=" padding-right: 20px;">Appoinment ID</th>
-        <th style=" padding-right: 20px;">Client_ID</th>
-        <th >Appointment Time</th>
+
+ <br><br><br><br>
+  <h2 style="border-style:solid; border-color:black; text-shadow: 2px 2px 5px green;" align="center">Appointment List From Me</h2>
+  <table class="table table-bordered">
+  <thead>
+     <tr>
+        <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Appoinment ID</th>
+        <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Client_ID</th>
+        <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Appointment Time</th>
+    <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Update</th>
+    <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Delete</th>
       </tr>
-      @foreach($appointmentToMe as $key => $appointment)
-      <div>
-        <tr >
-          <td style=" padding-right: 20px;">{{ $appointment->id }}</td>
-          <td style=" padding-right: 20px;">{{ $appointment->client_id }}</td>
-          <td style=" padding-right: 20px;">{{ $appointment->appointmentTime }}</td>
-          @if($key>0)
-          <td style=" padding-right: 20px;">
-            <form method="POST" action="/user/updateappointment/{{$user->id}}">
-              {{ csrf_field() }}
-              <input type="hidden" value="{{$appointment->id}}" name="up"/>
-              <button type="submit" >↑</button>
-            </form>
-          </td>
-          @endif
-          @if($key<sizeof($appointmentToMe)-1)
-          <td style=" padding-right: 20px;">
-            <form method="POST" action="/user/updateappointment/{{$user->id}}">
-              {{ csrf_field() }}
-              <input type="hidden" value="{{$appointment->id}}" name="down"/>
-              <button type="submit" >↓</button>
-            </form>
-          </td>
-          @endif
-           <td style=" padding-right: 20px;">
+
+  </thead>
+      <tbody>
+        @foreach($appointmentFromMe as $appointment)
+        <tr>
+          <td style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">{{$appointment->id}}</td>
+          <td style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">{{$appointment->user_id}}</td>
+          <td style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">{{ $appointment->appointmentTime }}</td>
+          <td style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">
+
             <form method="POST" action="/user/updateappointment/{{$user->id}}">
               {{ csrf_field() }}
               <input type="hidden" value="{{$appointment->id}}" name="update"/>
-              <button type="submit">Update</button>
+              <button style="text-shadow: 2px 2px 5px green;" type="submit">Update</button>
             </form>
-          </td>
+           </td>
           <td>
             <form method="POST" action="/user/deleteappointment/{{$user->id}}">
               {{ csrf_field() }}
               <input type="hidden" value="{{$appointment->id}}" name="delete"/>
-              <button type="submit">Delete</button>
+              <button style="text-shadow: 2px 2px 5px green;" type="submit">Delete</button>
             </form>
           </td>
         </tr>
+        @endforeach
       </div>
-      @endforeach
+    </tbody>
   </table>
-<br>
-  <h2 align="left">Appointment List From Me</h2>
-  <table>
-     <tr >
-        <th style=" padding-right: 20px;">Appoinment ID</th>
-        <th style=" padding-right: 20px;">User_ID</th>
-        <th >Appointment Time</th>
-        <th >Appointment Duration</th>
-      </tr>
-      @foreach($appointmentFromMe as $appointment)
+<br><br><br><br><br><br>
+
+  <h2 style="border-style:solid; border-color:black; text-shadow: 2px 2px 5px green;" align="center">Appointment List To Me</h2>
+ <table class="table table-bordered">
+  <thead>
+     <tr>
+        <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Appoinment ID</th>
+        <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">User_ID</th>
+        <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Appointment Time</th>
+    <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Update</th>
+    <th style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">Delete</th>
+  </thead>
+  <tbody>
+        @foreach($appointmentToMe as $appointment)
         <tr>
-          <td style=" padding-right: 20px;">{{ $appointment->id }}</td>
-          <td style=" padding-right: 20px;">{{ $appointment->user_id }}</td>
-          <td style=" padding-right: 20px;">{{ $appointment->appointmentTime }}</td>
-          <td style=" padding-right: 20px;">{{ $appointment->hour }}Hr  {{ $appointment->min }}Min</td>
+          <td style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">{{$appointment->id}}</td>
+          <td style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">{{$appointment->client_id}}</td>
+          <td style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">{{ $appointment->appointmentTime }}</td>
+          <td style="text-shadow: 2px 2px 5px green;" style=" padding-right: 20px;">
+            <form method="POST" action="/user/updateappointment/{{$user->id}}">
+              {{ csrf_field() }}
+              <input type="hidden" value="{{$appointment->id}}" name="update"/>
+              <button style="text-shadow: 2px 2px 5px green;" type="submit" >Update</button>
+            </form>
+          </td>
+
           <td>
             <form method="POST" action="/user/deleteappointment/{{$user->id}}">
               {{ csrf_field() }}
               <input type="hidden" value="{{$appointment->id}}" name="delete"/>
-              <button type="submit">Delete</button>
+              <button style="text-shadow: 2px 2px 5px green;" type="submit">Delete</button>
             </form>
           </td>
         </tr>
-      @endforeach
+        @endforeach
+  </tbody>
  </table>
+ <br><br><br><br><br><br>
 <div style="clear: both"></div>
 @endsection

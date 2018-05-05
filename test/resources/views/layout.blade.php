@@ -10,38 +10,72 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Appointment Assistant</title>
   </head>
   <body>
     <header>
-      <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-8 col-md-7 py-4">
-              <h4 class="text-white">About</h4>
-              <p class="text-muted">Appointment Assistant lets you make and manage your appointments from anywhere.</p>
-            </div>
-            <div class="col-sm-4 offset-md-1 py-4">
-              <h4 class="text-white">Contact</h4>
-              <ul class="list-unstyled">
-                <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                <li><a href="#" class="text-white">Like on Facebook</a></li>
-                <li><a href="#" class="text-white">Email me</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
           <a href="/" class="navbar-brand d-flex align-items-center">
             
             <strong>Appointment Assistant</strong>
           </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+            <?php 
+              use App\Appointment;
+              $user = Auth::user();
+              if(!is_null($user))
+              {
+                $notificationcount =count(Auth::user()->unreadNotifications);
+                $notify = Auth::user()->unreadNotifications;
+              }
+          ?>
+            @auth
+            <div style="padding-left: 700px;">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-decoration: none;">
+                {{$user->name}}</a> 
+               <ul class="dropdown-menu" role="menu">
+                  <li>
+                     <a href="/home" role="button" style="text-decoration: none;">
+                    My Profile</a>
+                  </li>
+                  <li>
+                     <a href="/user/{{$user->id}}/edit" role="button" style="text-decoration: none;">
+                    Edit Profile</a>
+                  </li>
+                  <li>
+                     <a href="/user" role="button" style="text-decoration: none;">
+                    Users</a>
+                  </li>
+                  <li>
+                     <a href="logout" role="button" style="text-decoration: none;">
+                    Logout</a>
+                  </li>
+                </ul>
+              </li>
+            </div>
+            <div align="right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+               <i class="fa fa-globe" style="font-size:20px;"></i><span class="badge">{{$notificationcount}}</span></a> 
+               <ul class="dropdown-menu" role="menu">
+                  @foreach($notify as $notification)
+                  <li>
+                    @if($notification->type=='App\Notifications\AppointmentGiven')
+                      @include('notifications.appointmentGiven')
+                    @elseif($notification->type=='App\Notifications\AppointmentDelete')
+                      @include('notifications.cancelAppointment')
+                    @elseif($notification->type=='App\Notifications\AppointmentApproved')
+                      @include('notifications.approvedAppointment')
+                    @endif
+                  </li>
+                  @endforeach
+                </ul>
+              </li>
+          </div>
+          @endauth
         </div>
       </div>
     </header>

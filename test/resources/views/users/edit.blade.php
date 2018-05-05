@@ -50,6 +50,92 @@
                                 @endif
                             </div>
                         </div>
+                        <?php
+                        $i=0;
+                        ?>
+                        @foreach($education as $vedu)
+                        <?php
+                            $i++;
+                            if($vedu->present)
+                                $curr="True";
+                            else
+                                $curr="False"; 
+                        ?>
+                        <input type="hidden" name="eduid[]" value="{{$vedu->id}}">
+                        <div class="form-group row">
+                            <label for="institution" class="col-md-4 col-form-label text-md-right">{{ __('Institution ')}}{{$i}}</label>
+                            <div class="col-md-6">
+                                <input class="form-control{{ $errors->has('institution') ? ' is-invalid' : '' }}" id="institution" type="text"  name="institution[]" value="{{ $vedu->institution }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="department" class="col-md-4 col-form-label text-md-right">{{ __('Department') }}</label>
+                            <div class="col-md-6">
+                                <input class="form-control{{ $errors->has('department') ? ' is-invalid' : '' }}" id="department" type="text"  name="department[]" value="{{ $vedu->department }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="degree" class="col-md-4 col-form-label text-md-right">{{ __('Degree') }}</label>
+                            <div class="col-md-6">
+                                <input class="form-control{{ $errors->has('degree') ? ' is-invalid' : '' }}" id="degree[]" type="text"  name="degree" value="{{ $vedu->degree }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="present" class="col-md-4 col-form-label text-md-right">{{ __('Current Institution') }}</label>
+                            <div class="col-md-6">
+                                <input class="form-control{{ $errors->has('present') ? ' is-invalid' : '' }}" id="present" type="text"  name="present[]" value="{{ $curr }}" required autofocus>
+                            </div>
+                        </div>
+                        @endforeach
+                        <div class="form-group row">
+                            <label  class="col-md-4 col-form-label text-md-right">{{ __('Add More Educational Background') }}</label>
+
+                            <div class="col-md-6">
+                                <a href="/user/{{ $user->id }}/edit/editeducation">
+                                    <button type="button" style="font-size: 20px"><i class="fa fa-pencil"></i></button>
+                                </a>
+                            </div>
+                        </div>
+                        <?php
+                        $i=0;
+                        ?>
+                        @foreach($experience as $experience)
+                        <?php
+                            $i++;
+                            if($experience->present)
+                                $curr="True";
+                            else
+                                $curr="False"; 
+                        ?>
+                        <input type="hidden" name="exid[]" value="{{$experience->id}}">
+                        <div class="form-group row">
+                            <label for="company" class="col-md-4 col-form-label text-md-right">{{ __('Company ') }}{{$i}}</label>
+                            <div class="col-md-6">
+                                <input class="form-control{{ $errors->has('company') ? ' is-invalid' : '' }}" id="company" type="text"  name="company[]" value="{{ $experience->work_place }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="designation" class="col-md-4 col-form-label text-md-right">{{ __('Designation') }}</label>
+                            <div class="col-md-6">
+                                <input class="form-control{{ $errors->has('designation') ? ' is-invalid' : '' }}" id="designation" type="text"  name="designation[]" value="{{ $experience->designation }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="presentex" class="col-md-4 col-form-label text-md-right">{{ __('Current Work Place') }}</label>
+                            <div class="col-md-6">
+                                <input class="form-control{{ $errors->has('present') ? ' is-invalid' : '' }}" id="presentex" type="text"  name="presentex[]" value="{{ $curr }}" required autofocus>
+                            </div>
+                        </div>
+                        @endforeach
+                        <div class="form-group row">
+                            <label  class="col-md-4 col-form-label text-md-right">{{ __('Add More Work Experience') }}</label>
+
+                            <div class="col-md-6">
+                                <a href="/user/{{ $user->id }}/edit/editexperience">
+                                    <button type="button" style="font-size: 20px"><i class="fa fa-pencil"></i></button>
+                                </a>
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -87,7 +173,6 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
-
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
