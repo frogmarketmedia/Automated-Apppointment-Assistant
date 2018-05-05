@@ -107,7 +107,7 @@ class AppointmentsController extends Controller
                 'min' => $request->get('minD')
                 ]);
                 $user->notify(new AppointmentGiven($appointment));
-                //return redirect("gc/$appointment->id");
+                return redirect("gc/$appointment->id");
             }
             else {
                 $hoise = "You cannot place an Appointment outside the working hour of an user <br>";

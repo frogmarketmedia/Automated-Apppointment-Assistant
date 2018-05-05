@@ -62,7 +62,6 @@ class gCalendarController extends Controller
         } else {
             $this->client->authenticate($_GET['code']);
             $_SESSION['access_token'] = $this->client->getAccessToken();
-            //return redirect()->route('gcalendar.index');
             return;
         }
     }
@@ -90,6 +89,8 @@ class gCalendarController extends Controller
         $client = User::find($appointment->client_id);
 
         $time = date('c',strtotime($appointment->appointmentTime));
+        if (!(isset($_SESSION['access_token']) && $_SESSION['access_token'])) redirect()->route('oauthCallBack');
+
 
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $this->client->setAccessToken($_SESSION['access_token']);

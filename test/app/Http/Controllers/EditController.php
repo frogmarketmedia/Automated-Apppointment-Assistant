@@ -258,6 +258,8 @@ class EditController extends Controller
                 $appointment->user_id=$request->get('user_id');
                 $appointment->client_id=$request->get('client_id');
                 $appointment->appointmentTime = $request->get('appointmentTime');
+                $appointment->hour = $request->get('hourD');
+                $appointment->min = $request->get('minD');
                 $appointment->save();
                 $send = User::find($appointment->client_id);
                 $send->notify(new AppointmentUpdate($appointment));
