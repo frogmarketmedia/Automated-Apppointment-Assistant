@@ -75,23 +75,26 @@ class AppointmentsController extends Controller
                 $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
                 $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
                 $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
-                echo "$timeAppStart----------$timeAppEnd-----------$timeStampCarbon<br>";
+                //echo "$timeAppStart----------$timeAppEnd-----------$timeStampCarbon<br>";
             }
             
             $now = new Carbon();
 
             if($timeStampCarbon<$now) {
-                $hoise = "na mama past e appointment dewa jabe nah :p";
+                $hoise = "You cannot place an appointment in the past!!";
                 return view('appointment',compact('hoise','user'));
             }
             else if($appEnd->format('H:i:s') > $userEnd->format('H:i:s')) {
-                $hoise = "$appEnd ==$userEnd\n shale chor,appointment duration crosses the working hour,pakad liya!hu!!";
+                $hoise = "Appointment duration crosses the working hour!!<br> Place appointment in the slots given below<br>";
+                for($key=0;$key<sizeof($freeTime)-1;$key=$key+2) {
+                    $hoise .= "From ".$freeTime[$key]." to ".$freeTime[$key+1]."<br>";
+                }
                 return view('appointment',compact('hoise','user'));
             }
             else if($conflictingApp->count()) {
-                $hoise = "na mama hobe na ei time e,onnor sathe appointment ase<br>";
+                $hoise = "This user is not available at this time<br>Place appointment in the slots given below<br>";
                 for($key=0;$key<sizeof($freeTime)-1;$key=$key+2) {
-                    $hoise .= $freeTime[$key]." theke ".$freeTime[$key+1]."free ase mama<br>";
+                    $hoise .= "From ".$freeTime[$key]."to ".$freeTime[$key+1]."<br>";
                 }
                 return view('appointment',compact('hoise','user'));
             }
@@ -107,7 +110,7 @@ class AppointmentsController extends Controller
                 //return redirect("gc/$appointment->id");
             }
             else {
-                $hoise = "na mama hobe na ei time e";
+                $hoise = "You cannot place an Appointment outside the working hour of an user <br>";
                 return view('appointment',compact('hoise','user'));
             }
             return redirect('/home');
