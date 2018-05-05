@@ -26,14 +26,46 @@ class AppointmentsController extends Controller
             $time = date('H:i:s', strtotime($timeStamp));
             $date = date('Y-m-d', strtotime($timeStamp));
 
-            $conflictingApp = Appointment::whereRaw("DATE(appointmentTime) = '$date'")->get();
+            $conflictingApp = Appointment::whereRaw("DATE(appointmentTime) = '$date'")->orderBy('appointmentTime')->get();
+            $freeTime = array();
+
+            //dd($conflictingApp);
+            $index = 0;
+            foreach ($conflictingApp as $capp => &$pcapp) {
+//                echo "$pcapp<br>";
+                if($capp<sizeof($conflictingApp)-1) {
+                    $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
+                    $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
+                    $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
+
+                    $timeAppStart = Carbon::createFromTimeString($conflictingApp[$capp+1]->appointmentTime);
+                    
+                    if($capp==0) {
+                        $freeTime[$index++] = $user['workStart'];
+                        $freeTime[$index++] = Carbon::createFromTimeString($pcapp->appointmentTime)->format('H:i:s');
+                    }
+
+                    $freeTime[$index++] = $timeAppEnd->format('H:i:s');
+                    $freeTime[$index++] = $timeAppStart->format('H:i:s');                    
+                }
+                else{
+                    $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
+                    $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
+                    $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
+
+                    $freeTime[$index++] = $timeAppEnd->format('H:i:s');
+                    $freeTime[$index++] = $user['workStop'];
+                }
+            }
+
+//            dd($freeTime);
 
             foreach ($conflictingApp as $capp => &$pcapp) {
                 $timeAppStart = Carbon::createFromTimeString($pcapp->appointmentTime);
                 $timeAppEnd = Carbon::createFromTimeString($pcapp->appointmentTime);
                 $timeAppEnd->hour = $timeAppEnd->hour + $pcapp->hour;
                 $timeAppEnd->minute = $timeAppEnd->minute + $pcapp->min;
-                if(!($timeStampCarbon>$timeAppStart && $timeStampCarbon<$timeAppEnd)) {
+                if(!($timeStampCarbon>=$timeAppStart && $timeStampCarbon<=$timeAppEnd) && !($appEnd>=$timeAppStart && $appEnd<=$timeAppEnd)) {
                     unset($conflictingApp[$capp]);
                 }
             }
@@ -57,7 +89,10 @@ class AppointmentsController extends Controller
                 return view('appointment',compact('hoise','user'));
             }
             else if($conflictingApp->count()) {
-                $hoise = "na mama hobe na ei time e,onnor sathe appointment ase";
+                $hoise = "na mama hobe na ei time e,onnor sathe appointment ase<br>";
+                for($key=0;$key<sizeof($freeTime)-1;$key=$key+2) {
+                    $hoise .= $freeTime[$key]." theke ".$freeTime[$key+1]."free ase mama<br>";
+                }
                 return view('appointment',compact('hoise','user'));
             }
             else if($time>$user['workStart'] && $time<$user['workStop']) {
