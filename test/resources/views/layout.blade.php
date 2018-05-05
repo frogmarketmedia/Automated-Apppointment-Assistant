@@ -34,23 +34,23 @@
             @auth
             <div style="padding-left: 700px;">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-decoration: none;">
-                {{$user->name}}</a> 
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-decoration: none; color: white;">
+                <strong>{{$user->name}}</strong></a> 
                <ul class="dropdown-menu" role="menu">
                   <li>
-                     <a href="/home" role="button" style="text-decoration: none;">
+                     <a href="/home" role="button" style="text-decoration: none; color: #1A5276;">
                     My Profile</a>
                   </li>
                   <li>
-                     <a href="/user/{{$user->id}}/edit" role="button" style="text-decoration: none;">
+                     <a href="/user/{{$user->id}}/edit" role="button" style="text-decoration: none;color: #1A5276;">
                     Edit Profile</a>
                   </li>
                   <li>
-                     <a href="/user" role="button" style="text-decoration: none;">
+                     <a href="/user" role="button" style="text-decoration: none; color: #1A5276;">
                     Users</a>
                   </li>
                   <li>
-                     <a href="logout" role="button" style="text-decoration: none;">
+                     <a href="logout" role="button" style="text-decoration: none; color: #1A5276;">
                     Logout</a>
                   </li>
                 </ul>
@@ -58,7 +58,7 @@
             </div>
             <div align="right">
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: white;">
                <i class="fa fa-globe" style="font-size:20px;"></i><span class="badge">{{$notificationcount}}</span></a> 
                <ul class="dropdown-menu" role="menu">
                   @foreach($notify as $notification)
