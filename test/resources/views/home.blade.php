@@ -6,6 +6,7 @@
     $user = Auth::user();
     $appointmentToMe = Appointment::where('user_id','=', $user->id)->orderBy('appointmentTime')->get();
     $appointmentFromMe = Appointment::where('client_id','=', $user->id)->orderBy('appointmentTime')->get();
+    Appointment::deletePast();
 ?>
 
 <div align="left">
