@@ -58,4 +58,9 @@ class userController extends Controller
     {
         return view('homenew');
     }
+    public function viewprofile()
+    {
+        $user=Auth::user();
+        return view('users.details',compact('user'));
+    }
 }

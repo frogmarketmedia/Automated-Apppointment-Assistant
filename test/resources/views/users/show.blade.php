@@ -36,7 +36,7 @@ $experiences = Experiences::where('user_id','=',$user->id)->get();
 <br>
 <br>
 <br>
-<form id="demo" class="rating" method="POST" action="/setrating/{{$user->id}}" style="padding-left: 250px;">
+<form id="demo" class="rating" method="POST" action="/setrating/{{$user->id}}" style="padding-left: 30px;">
   {{ csrf_field() }}
   <input type="submit" style="position: absolute; left: -9999px"/>
   <label>
@@ -71,7 +71,7 @@ $experiences = Experiences::where('user_id','=',$user->id)->get();
   </label>
 
 </form>
-<form method="GET" action="/placeappointments/{{$user->id}}" style="padding-left: 250px;">
+<form method="GET" action="/placeappointments/{{$user->id}}" style="padding-left: 300px;">
       {{ csrf_field() }}
       <div class="top-right links">
             <button type="submit" class="btn btn-primary">Place Appointment</button>

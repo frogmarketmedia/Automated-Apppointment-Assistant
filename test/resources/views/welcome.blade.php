@@ -50,7 +50,7 @@
                 font-size: 84px;
             }
 
-            .links > a {
+            a{
                 color: #636b6f;
                 padding: 0 25px;
                 font-size: 12px;
@@ -66,20 +66,6 @@
         </style>
     </head>
     <body>
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">My Profile</a>
-                        <a href="{{ url('/logout') }}">Logout</a>
-                        <a href="/user">User's</a>
-
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                        <a href="/user">User's</a>
-                    @endauth
-                </div>
-            @endif
             <div class="imagepos">
                 <img src="\image\home_page2.jpg" height="300" width="500"> </img>
             </div>
@@ -87,6 +73,17 @@
                 <div class="title m-b-md">
                     Appointment Assistant
                 </div>
+                @if (Route::has('login'))
+                    @auth
+                        <a href="{{ url('/home') }}">My Profile</a>
+                        <a href="{{ url('/logout') }}">Logout</a>
+                        <a href="/user">User's</a>
+
+                    @else
+                        <a href="{{ route('login') }}" style="text-decoration: none">Login</a>
+                        <a href="{{ route('register') }}" style="text-decoration: none">Register</a>
+                    @endauth
+                 @endif
             </div>
     </body>
 </html>
