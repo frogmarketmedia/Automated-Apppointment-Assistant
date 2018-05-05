@@ -7,13 +7,12 @@ use Carbon\Carbon;
 
 class Appointment extends Model
 {
-	protected $fillable = ['user_id','client_id','appointmentTime','hour','min'];
+	protected $fillable = ['user_id','client_id','appointmentTime','hour','min','approved'];
     //
 
    	public static function deletePast() {
    		$n = Carbon::now()->toDateTimeString();
-   		echo "$n<br>";
-   		$appointments = Appointment::where('appointmentTime','<',$n)->delete();
+   		//$appointments = Appointment::where('appointmentTime','<',$n)->delete();
    		return;
    	}
 }

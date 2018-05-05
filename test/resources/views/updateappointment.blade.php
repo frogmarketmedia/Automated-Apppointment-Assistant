@@ -5,6 +5,9 @@
 <form method="POST" action="/user/updateappointment/{{$app->id}}/updated">
   {{ csrf_field() }}
   <div class="form-group">
+     @if(isset($refer))
+      <input type="hidden" value="{{$refer['notificationidu']}}" name="notificationidu"/><br>
+     @endif
   	 <input type="hidden" value="{{$app->id}}" name="id"/><br>
   	 <input type="hidden" value="{{$app->user_id}}" name="user_id"/><br>
   	 <input type="hidden" value="{{$app->client_id}}" name="client_id"/><br>

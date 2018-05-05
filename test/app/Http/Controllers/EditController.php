@@ -162,9 +162,12 @@ class EditController extends Controller
     }
      public function updateAppointmentindex(Request $request,Appointment $appointment){
         $requested = $request->get('update');
-        $app= Appointment::where('id','=',$requested)->first();
+        if($request->has('notificationidu')) {
+            $refer['notificationidu'] = $request->get('notificationidu');
+        }
+        $app = Appointment::where('id','=',$requested)->first();
 
-        return view('updateappointment', compact('app'));
+        return view('updateappointment', compact('app','refer'));
     }
     public function updateAppointment(Request $request){
             $client = Auth::user();
@@ -259,10 +262,10 @@ class EditController extends Controller
                 $send = User::find($appointment->client_id);
                 $send->notify(new AppointmentUpdate($appointment));
                 Email::to($send->email)->send(new AppointmentChanged($appointment));
-                $requestid=$request->get('notificationidu');
-                if(!is_null($requestid))
+                if($request->has('notificationidu'))
                 {
-                    DB::table('notifications')->where('id','=',$requestid)->delete();
+                    DB::table('notifications')->where('id','=',$request->get('notificationidu'))->delete();
+                    $appointment->update(['approved'=> 1]);
                 }
                 //return redirect("gc/$appointment->id");
             }
@@ -276,17 +279,10 @@ class EditController extends Controller
     public function approved(Request $request)
     {
         $requested = $request->get('approved');
-        $requestid=$request->get('notificationida');
+        $requestid = $request->get('notificationida');
         DB::table('notifications')->where('id','=',$requestid)->delete();
         $appointment = Appointment::find($requested);
-        $userid = $appointment->user_id;
-        $clientid=$appointment->client_id;
-        $appointmenttime=$appointment->appointmentTime;
-        $appointment->user_id= $userid;
-        $appointment->client_id= $clientid;
-        $appointment->appointmentTime=$appointmenttime;
-        $appointment->approved = true;
-        $appointment->save();
+        $appointment->update(['approved'=> 1]);
         $send = User::find($appointment->client_id);
         $send->notify(new AppointmentApproved($appointment));
         Email::to($send->email)->send(new AppointmentApproval($appointment));

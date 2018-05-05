@@ -4,9 +4,13 @@
 <?php 
     use App\Appointment;
     $user = Auth::user();
-    $appointmentToMe = Appointment::where('user_id','=', $user->id)->orderBy('appointmentTime')->get();
-    $appointmentFromMe = Appointment::where('client_id','=', $user->id)->orderBy('appointmentTime')->get();
     Appointment::deletePast();
+    $appointmentToMe = Appointment::where('user_id','=', $user->id)
+                                    ->where('approved','=',1)
+                                    ->orderBy('appointmentTime')->get();
+    $appointmentFromMe = Appointment::where('client_id','=', $user->id)
+                                    ->where('approved','=',1)
+                                    ->orderBy('appointmentTime')->get();
 ?>
 
 <div align="left">
