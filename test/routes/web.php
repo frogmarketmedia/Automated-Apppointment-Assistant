@@ -31,6 +31,10 @@ Route::post('/user/profilepicupdated','userController@update_photo');
 Route::get('/login', 'loginController@index');
 Route::post('/login/enter', 'loginController@enter');
 
+
+Route::get('/viewprofile', function () {
+    return view('users.details');
+});
 Route::get('/createEvent', 'gCalendarController@create');
 
 Route::post('/delete/notification', 'EditController@deleteNotification');
