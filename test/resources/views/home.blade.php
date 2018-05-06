@@ -6,13 +6,17 @@
     use App\Appointment;
     use App\Educations;
     use App\Experiences;
+    use Carbon\Carbon;
     $user = Auth::user();
     Appointment::deletePast();
+    $now = Carbon::now()->toDateTimeString();
     $appointmentToMe = Appointment::where('user_id','=', $user->id)
                                     ->where('approved','=',1)
+                                    ->where('appointmentTime','>=',$now)
                                     ->orderBy('appointmentTime')->get();
     $appointmentFromMe = Appointment::where('client_id','=', $user->id)
                                     ->where('approved','=',1)
+                                    ->where('appointmentTime','>=',$now)
                                     ->orderBy('appointmentTime')->get();
     $education = Educations::where('user_id','=',$user->id)->where('present','=',1)->first();
     $experience = Experiences::where('user_id','=',$user->id)->where('present','=',1)->first();

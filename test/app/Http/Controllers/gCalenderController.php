@@ -89,9 +89,9 @@ class gCalendarController extends Controller
         $client = User::find($appointment->client_id);
 
         $time = date('c',strtotime($appointment->appointmentTime));
-        if (!(isset($_SESSION['access_token']) && $_SESSION['access_token'])) redirect()->route('oauthCallBack');
 
-
+        redirect()->route('oauthCallback');
+        
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $this->client->setAccessToken($_SESSION['access_token']);
             $service = new Google_Service_Calendar($this->client);
