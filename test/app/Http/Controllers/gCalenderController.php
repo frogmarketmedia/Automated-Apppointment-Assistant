@@ -90,8 +90,6 @@ class gCalendarController extends Controller
 
         $time = date('c',strtotime($appointment->appointmentTime));
 
-        redirect()->route('oauthCallback');
-        
         if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $this->client->setAccessToken($_SESSION['access_token']);
             $service = new Google_Service_Calendar($this->client);
@@ -109,7 +107,7 @@ class gCalendarController extends Controller
             if (!$results) {
                 return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
             }
-            return view('home');
+            return redirect('home');
         } else {
             return redirect()->route('oauthCallback');
         }
